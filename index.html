@@ -2467,6 +2467,7 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
       shapeCircle 0.5s forwards,
       shapeRectangle 0.5s 0.5s forwards,
       shapeHexagon 0.5s 1s forwards;
+              shapePentagon 0.5s 1.5s forwards;
 }
 
 .loader-avatar img{
@@ -2474,7 +2475,27 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
     height:100%;
     object-fit:cover;
 }
-
+@keyframes shapePentagon{
+    from{
+        clip-path: polygon(
+            25% 5%,
+            75% 5%,
+            100% 50%,
+            75% 95%,
+            25% 95%,
+            0% 50%
+        );
+    }
+    to{
+        clip-path: polygon(
+            50% 0%,
+            100% 38%,
+            82% 100%,
+            18% 100%,
+            0% 38%
+        );
+    }
+}
 @keyframes shapeCircle{
     from{
         border-radius:0;
