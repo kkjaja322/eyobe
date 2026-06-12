@@ -2440,7 +2440,9 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
   background: linear-gradient(135deg, #0f172a, #020617);
   transition: opacity 0.8s ease;
 ">
-
+<div class="loader-avatar">
+  <img src="eyoba.jpg" alt="Eyoba">
+</div>
   <h1 style="
     font-size: 22px;
     letter-spacing: 4px;
@@ -2456,6 +2458,56 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
        style="overflow:visible;display:block;">
 
     <style>
+         .loader-avatar{
+    width:120px;
+    height:120px;
+    margin-bottom:20px;
+    overflow:hidden;
+    animation:
+      shapeCircle 0.5s forwards,
+      shapeRectangle 0.5s 0.5s forwards,
+      shapeHexagon 0.5s 1s forwards;
+}
+
+.loader-avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+@keyframes shapeCircle{
+    from{
+        border-radius:0;
+    }
+    to{
+        border-radius:50%;
+    }
+}
+
+@keyframes shapeRectangle{
+    from{
+        border-radius:50%;
+    }
+    to{
+        border-radius:12px;
+    }
+}
+
+@keyframes shapeHexagon{
+    from{
+        clip-path:none;
+    }
+    to{
+        clip-path:polygon(
+            25% 5%,
+            75% 5%,
+            100% 50%,
+            75% 95%,
+            25% 95%,
+            0% 50%
+        );
+    }
+}
       .ldr-wheel {
         fill: none; stroke: #38bdf8;
         stroke-width: 4; stroke-linecap: round;
