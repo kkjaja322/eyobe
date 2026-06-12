@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -2429,7 +2428,215 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
 </style>
 </head>
 <body>
+<!-- ═══ LOADING SCREEN ═══ -->
+<div id="loaderScreen" style="
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #0f172a, #020617);
+  transition: opacity 0.8s ease;
+">
 
+  <h1 style="
+    font-size: 22px;
+    letter-spacing: 4px;
+    margin-bottom: 30px;
+    opacity: 0.9;
+    text-transform: uppercase;
+    color: #e2e8f0;
+    font-family: 'Segoe UI', sans-serif;
+  ">EYOBA 🧑‍💻🛫</h1>
+
+  <svg width="360" viewBox="0 0 300 150"
+       xmlns="http://www.w3.org/2000/svg"
+       style="overflow:visible;display:block;">
+
+    <style>
+      .ldr-wheel {
+        fill: none; stroke: #38bdf8;
+        stroke-width: 4; stroke-linecap: round;
+        stroke-dasharray: 140; stroke-dashoffset: 0;
+        animation: ldrSpin 1.2s linear infinite,
+                   ldrDash 1.6s ease-in-out infinite;
+      }
+      .ldr-wl { transform-origin: 90px 100px; }
+      .ldr-wr { transform-origin: 210px 100px; }
+      .ldr-sgl { transform-origin: 90px 100px;
+                 animation: ldrSpin 1.2s linear infinite; }
+      .ldr-sgr { transform-origin: 210px 100px;
+                 animation: ldrSpin 1.2s linear infinite; }
+      .ldr-spoke {
+        stroke: rgba(56,189,248,0.48);
+        stroke-width: 1.3; stroke-linecap: round;
+      }
+      .ldr-crank {
+        transform-origin: 150px 100px;
+        animation: ldrSpin 1.2s linear infinite;
+      }
+      .ldr-chain {
+        fill: none; stroke: #475569;
+        stroke-width: 2; stroke-dasharray: 4 4;
+        animation: ldrChain 0.6s linear infinite;
+      }
+      .ldr-spr-o {
+        fill:none; stroke:#38bdf8; stroke-width:1.8;
+        opacity:0.5; transform-origin:210px 100px;
+        animation: ldrSpin 1.2s linear infinite;
+      }
+      .ldr-spr-i {
+        fill:none; stroke:#38bdf8; stroke-width:1;
+        opacity:0.22; transform-origin:210px 100px;
+        animation: ldrSpin 1.2s linear infinite;
+      }
+      .ldr-txt {
+        margin-top: 18px; font-size: 13px;
+        letter-spacing: 3px; opacity: 0.8;
+        animation: ldrBlink 1.3s infinite;
+        text-transform: uppercase;
+        color: #e2e8f0;
+        font-family: 'Segoe UI', sans-serif;
+      }
+      @keyframes ldrSpin {
+        from { transform: rotate(0deg); }
+        to   { transform: rotate(360deg); }
+      }
+      @keyframes ldrDash {
+        0%   { stroke-dashoffset:  140; }
+        50%  { stroke-dashoffset:    0; }
+        100% { stroke-dashoffset: -140; }
+      }
+      @keyframes ldrChain {
+        from { stroke-dashoffset: 0;   }
+        to   { stroke-dashoffset: -16; }
+      }
+      @keyframes ldrBlink {
+        0%,100% { opacity: 0.8; }
+        50%     { opacity: 0.2; }
+      }
+    </style>
+
+    <!-- Ground shadows -->
+    <ellipse fill="rgba(0,0,0,0.28)" cx="90"  cy="133" rx="25" ry="4"/>
+    <ellipse fill="rgba(0,0,0,0.28)" cx="210" cy="133" rx="25" ry="4"/>
+
+    <!-- Sprockets -->
+    <circle class="ldr-spr-o" cx="210" cy="100" r="11"/>
+    <circle class="ldr-spr-i" cx="210" cy="100" r="7"/>
+
+    <!-- Chain runs -->
+    <line class="ldr-chain" x1="163" y1="87"  x2="202" y2="91"/>
+    <line class="ldr-chain" x1="163" y1="113" x2="202" y2="109"
+          style="animation-direction:reverse;"/>
+
+    <!-- Left spokes -->
+    <g class="ldr-sgl">
+      <line class="ldr-spoke" x1="90" y1="100" x2="90"  y2="70"/>
+      <line class="ldr-spoke" x1="90" y1="100" x2="111" y2="79"/>
+      <line class="ldr-spoke" x1="90" y1="100" x2="120" y2="100"/>
+      <line class="ldr-spoke" x1="90" y1="100" x2="111" y2="121"/>
+      <line class="ldr-spoke" x1="90" y1="100" x2="90"  y2="130"/>
+      <line class="ldr-spoke" x1="90" y1="100" x2="69"  y2="121"/>
+      <line class="ldr-spoke" x1="90" y1="100" x2="60"  y2="100"/>
+      <line class="ldr-spoke" x1="90" y1="100" x2="69"  y2="79"/>
+    </g>
+
+    <!-- Right spokes -->
+    <g class="ldr-sgr">
+      <line class="ldr-spoke" x1="210" y1="100" x2="210" y2="70"/>
+      <line class="ldr-spoke" x1="210" y1="100" x2="231" y2="79"/>
+      <line class="ldr-spoke" x1="210" y1="100" x2="240" y2="100"/>
+      <line class="ldr-spoke" x1="210" y1="100" x2="231" y2="121"/>
+      <line class="ldr-spoke" x1="210" y1="100" x2="210" y2="130"/>
+      <line class="ldr-spoke" x1="210" y1="100" x2="189" y2="121"/>
+      <line class="ldr-spoke" x1="210" y1="100" x2="180" y2="100"/>
+      <line class="ldr-spoke" x1="210" y1="100" x2="189" y2="79"/>
+    </g>
+
+    <!-- Frame -->
+    <line fill="none" stroke="#e2e8f0" stroke-width="2.2"
+          stroke-linecap="round" opacity="0.62"
+          x1="150" y1="100" x2="210" y2="100"/>
+    <line fill="none" stroke="#e2e8f0" stroke-width="2.2"
+          stroke-linecap="round" opacity="0.62"
+          x1="170" y1="54"  x2="210" y2="100"/>
+    <line fill="none" stroke="#e2e8f0" stroke-width="3"
+          stroke-linecap="round" opacity="0.8"
+          x1="170" y1="54"  x2="150" y2="100"/>
+    <line fill="none" stroke="#e2e8f0" stroke-width="3"
+          stroke-linecap="round" opacity="0.8"
+          x1="125" y1="59"  x2="170" y2="54"/>
+    <line fill="none" stroke="#e2e8f0" stroke-width="3"
+          stroke-linecap="round" opacity="0.8"
+          x1="125" y1="64"  x2="150" y2="100"/>
+    <line fill="none" stroke="#e2e8f0" stroke-width="4.5"
+          stroke-linecap="round" opacity="0.85"
+          x1="125" y1="56"  x2="125" y2="70"/>
+    <line fill="none" stroke="#cbd5e1" stroke-width="2.5"
+          stroke-linecap="round" opacity="0.75"
+          x1="125" y1="70"  x2="90"  y2="100"/>
+
+    <!-- Handlebar -->
+    <line fill="none" stroke="#cbd5e1" stroke-width="3"
+          stroke-linecap="round"
+          x1="125" y1="56" x2="118" y2="43"/>
+    <line fill="none" stroke="#cbd5e1" stroke-width="3"
+          stroke-linecap="round"
+          x1="110" y1="43" x2="127" y2="43"/>
+
+    <!-- Saddle -->
+    <line fill="none" stroke="#94a3b8" stroke-width="2.5"
+          stroke-linecap="round"
+          x1="170" y1="54" x2="170" y2="42"/>
+    <line fill="none" stroke="#94a3b8" stroke-width="5"
+          stroke-linecap="round"
+          x1="161" y1="42" x2="180" y2="42"/>
+
+    <!-- Wheel rims -->
+    <circle class="ldr-wheel ldr-wl" cx="90"  cy="100" r="30"/>
+    <circle class="ldr-wheel ldr-wr" cx="210" cy="100" r="30"/>
+
+    <!-- Hubs -->
+    <circle fill="none" stroke="#38bdf8" stroke-width="1.5"
+            opacity="0.38" cx="90"  cy="100" r="8"/>
+    <circle fill="#38bdf8" cx="90"  cy="100" r="4"/>
+    <circle fill="none" stroke="#38bdf8" stroke-width="1.5"
+            opacity="0.38" cx="210" cy="100" r="8"/>
+    <circle fill="#38bdf8" cx="210" cy="100" r="4"/>
+
+    <!-- Bottom bracket -->
+    <circle fill="#0c1220" stroke="#38bdf8" stroke-width="1.5"
+            cx="150" cy="100" r="6"/>
+
+    <!-- Crank group -->
+    <g class="ldr-crank">
+      <circle fill="none" stroke="#38bdf8" stroke-width="2"
+              opacity="0.75" cx="150" cy="100" r="15"/>
+      <circle fill="none" stroke="#38bdf8" stroke-width="1.2"
+              opacity="0.3"  cx="150" cy="100" r="10"/>
+      <line stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round"
+            x1="150" y1="100" x2="150" y2="81"/>
+      <line stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round"
+            x1="143" y1="81"  x2="157" y2="81"/>
+      <circle fill="#38bdf8" cx="150" cy="81" r="2.5"/>
+      <line stroke="rgba(56,189,248,0.45)" stroke-width="3.5"
+            stroke-linecap="round"
+            x1="150" y1="100" x2="150" y2="119"/>
+      <line stroke="rgba(125,211,252,0.45)" stroke-width="3.5"
+            stroke-linecap="round"
+            x1="143" y1="119" x2="157" y2="119"/>
+      <circle fill="rgba(56,189,248,0.45)" cx="150" cy="119" r="2.5"/>
+    </g>
+
+  </svg>
+
+  <div class="ldr-txt">LOADING...</div>
+
+</div>
+<!-- ═══ END LOADING SCREEN ═══ -->
 <!-- noise -->
 <div class="noise" aria-hidden="true"></div>
 
@@ -2742,6 +2949,792 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
     <span class="anesthesia-banner__item"><span class="anesthesia-banner__dot"></span><span class="anesthesia-banner__text">Fentanyl Analgesic:</span><span class="anesthesia-banner__value">1–2 mcg/kg IV</span></span>
   </div>
 </div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     🩺 ANESTHESIA HUB — THE DEFINITIVE ANESTHESIA KNOWLEDGE CENTER
+═══════════════════════════════════════════════════════════════════ -->
+<section class="anesthesia-hub" id="anesthesia-hub">
+  <div class="container">
+    <div class="section-tag">🩺 Anesthesia Hub</div>
+    <h2 class="section-title">The <span class="grad-text">Anesthesiologist's</span> Arsenal</h2>
+    <p class="section-sub" style="margin-bottom:1.5rem;">A comprehensive knowledge center — pharmacology, monitoring, airway assessment, emergency protocols, and clinical tools. Built by an anesthesiology professional for the next generation of practitioners.</p>
+
+    <!-- hero stats -->
+    <div class="hub-hero-stats reveal">
+      <div class="hub-stat">
+        <span class="hub-stat-val" data-count="20">0</span>
+        <span class="hub-stat-lbl">Drug Profiles</span>
+      </div>
+      <div class="hub-stat">
+        <span class="hub-stat-val" data-count="12">0</span>
+        <span class="hub-stat-lbl">Monitoring Parameters</span>
+      </div>
+      <div class="hub-stat">
+        <span class="hub-stat-val" data-count="8">0</span>
+        <span class="hub-stat-lbl">Emergency Protocols</span>
+      </div>
+      <div class="hub-stat">
+        <span class="hub-stat-val" data-count="25">0</span>
+        <span class="hub-stat-lbl">Quiz Questions</span>
+      </div>
+    </div>
+
+    <!-- tab navigation -->
+    <div class="hub-tabs" role="tablist">
+      <button class="hub-tab active" data-htab="pharmacology" role="tab">💊 Pharmacology</button>
+      <button class="hub-tab" data-htab="monitoring" role="tab">📊 Monitoring</button>
+      <button class="hub-tab" data-htab="vitals-monitor" role="tab">🫀 Live Monitor</button>
+      <button class="hub-tab" data-htab="airway" role="tab">🫁 Airway Assessment</button>
+      <button class="hub-tab" data-htab="regional" role="tab">💉 Regional Anesthesia</button>
+      <button class="hub-tab" data-htab="emergency" role="tab">🚨 Emergency Protocols</button>
+      <button class="hub-tab" data-htab="asa" role="tab">📋 ASA Classification</button>
+      <button class="hub-tab" data-htab="checklist" role="tab">✅ Pre-Op Checklist</button>
+      <button class="hub-tab" data-htab="dose-calc" role="tab">🧮 Dose Calculator</button>
+      <button class="hub-tab" data-htab="interactions" role="tab">⚗️ Drug Interactions</button>
+      <button class="hub-tab" data-htab="pk" role="tab">📈 Pharmacokinetics</button>
+      <button class="hub-tab" data-htab="machine" role="tab">🔧 Anesthesia Machine</button>
+      <button class="hub-tab" data-htab="cases" role="tab">🏥 Case Studies</button>
+      <button class="hub-tab" data-htab="quiz" role="tab">🧠 Quiz</button>
+    </div>
+
+    <!-- ═══ PANEL: PHARMACOLOGY ═══ -->
+    <div class="hub-panel active" id="htab-pharmacology">
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem;" id="drugFilterBar">
+        <button class="fbtn active" data-dfilt="all">All Classes</button>
+        <button class="fbtn" data-dfilt="sedative">Induction Agents</button>
+        <button class="fbtn" data-dfilt="opioid">Opioids</button>
+        <button class="fbtn" data-dfilt="nmba">NMBAs</button>
+        <button class="fbtn" data-dfilt="reversal">Reversals</button>
+        <button class="fbtn" data-dfilt="inhalational">Inhalational</button>
+        <button class="fbtn" data-dfilt="vasopressor">Vasopressors</button>
+      </div>
+      <div class="drug-grid" id="drugGrid"></div>
+    </div>
+
+    <!-- ═══ PANEL: MONITORING ═══ -->
+    <div class="hub-panel" id="htab-monitoring">
+      <p style="color:var(--c-txt2);margin-bottom:1.5rem;font-size:.95rem;">Comprehensive guide to all anesthesia monitoring parameters — normal ranges, clinical significance, and alarm thresholds.</p>
+      <div class="monitor-param-grid" id="monitorParamGrid"></div>
+    </div>
+
+    <!-- ═══ PANEL: LIVE MONITOR ═══ -->
+    <div class="hub-panel" id="htab-vitals-monitor">
+      <p style="color:var(--c-txt2);margin-bottom:1.5rem;font-size:.95rem;">Simulated patient monitor — interactive vital signs display modeled after clinical anesthesia monitoring systems. Values update in real-time with physiological variation.</p>
+      <div class="vitals-monitor">
+      <!-- ═══ CLINICAL ALERT INDICATOR (Critical Thinking) ═══ -->
+      <div class="ct-alert-indicator">
+        <div class="ct-alert-dot" id="ctAlertDot"></div>
+        <span class="ct-alert-label" id="ctAlertLabel">NORMAL SINUS</span>
+        <span class="ct-alert-desc" id="ctAlertDesc">All vitals within physiological range</span>
+      </div>
+      <!-- ═══ EtCO₂ CRITICAL THINKING BADGE ═══ -->
+      <div class="ct-etco2-badge">
+        <div class="ct-badge-hdr">🧠 Critical Thinking — EtCO₂ Physiology</div>
+        <div class="ct-badge-q">Why does EtCO₂ drop during hyperventilation?</div>
+        <div class="ct-badge-ans" id="ctBadgeAns">
+          <strong>Mechanism:</strong> ↑ Minute ventilation (↑RR or ↑Vt) → CO₂ washout exceeds production → ↓PaCO₂ → ↓EtCO₂.<br><br>
+          <strong>Clinical significance:</strong> Deliberate hyperventilation ↓ICP via cerebral vasoconstriction (useful in acute herniation), but sustained hyperventilation → respiratory alkalosis → cerebral ischaemia. PaCO₂ target in ICP management: 35–40 mmHg (permissive) or 30–35 mmHg (therapeutic, short-term).<br><br>
+          <strong>Capnography waveform cue:</strong> A plateau that never fully elevates (shark-fin pattern) suggests bronchospasm or incomplete exhalation — not hyperventilation.
+        </div>
+        <button class="ct-toggle-btn" id="ctToggleBtn" onclick="toggleCtAnswer()">Show Answer ▾</button>
+      </div>
+
+        <div class="ecg-canvas-wrap">
+          <canvas id="ecgCanvas" height="80"></canvas>
+        </div>
+        <div class="vitals-grid">
+          <div class="vital-panel">
+            <div class="vital-panel-label">Heart Rate</div>
+            <div class="vital-panel-value vital-ecg" id="vHR">72</div>
+            <div class="vital-panel-unit">bpm</div>
+          </div>
+          <div class="vital-panel">
+            <div class="vital-panel-label">SpO₂</div>
+            <div class="vital-panel-value vital-spo2" id="vSPO2">98</div>
+            <div class="vital-panel-unit">%</div>
+          </div>
+          <div class="vital-panel">
+            <div class="vital-panel-label">NIBP</div>
+            <div class="vital-panel-value vital-bp" id="vBP" style="font-size:1.4rem;">118/76</div>
+            <div class="vital-panel-unit">mmHg</div>
+          </div>
+          <div class="vital-panel">
+            <div class="vital-panel-label">EtCO₂</div>
+            <div class="vital-panel-value vital-etco2" id="vETCO2">38</div>
+            <div class="vital-panel-unit">mmHg</div>
+          </div>
+          <div class="vital-panel">
+            <div class="vital-panel-label">Temperature</div>
+            <div class="vital-panel-value vital-temp" id="vTEMP">36.7</div>
+            <div class="vital-panel-unit">°C</div>
+          </div>
+          <div class="vital-panel">
+            <div class="vital-panel-label">Resp Rate</div>
+            <div class="vital-panel-value vital-rr" id="vRR">14</div>
+            <div class="vital-panel-unit">br/min</div>
+          </div>
+          <div class="vital-panel">
+            <div class="vital-panel-label">BIS</div>
+            <div class="vital-panel-value vital-bis" id="vBIS">48</div>
+            <div class="vital-panel-unit">index</div>
+          </div>
+          <div class="vital-panel">
+            <div class="vital-panel-label">FiO₂</div>
+            <div class="vital-panel-value vital-fio2" id="vFIO2">40</div>
+            <div class="vital-panel-unit">%</div>
+          </div>
+        </div>
+        <div class="monitor-status-bar">
+          <div class="monitor-status"><div class="monitor-dot" style="background:#00ff64"></div><span class="monitor-alarm-off">ALARMS: ON</span></div>
+          <div class="monitor-status"><div class="monitor-dot" style="background:var(--c-neon)"></div><span style="color:rgba(0,255,229,.5)">PACER: OFF</span></div>
+          <div class="monitor-status"><div class="monitor-dot" style="background:var(--c-amber)"></div><span style="color:rgba(255,179,71,.5)">NIBP AUTO: 5 MIN</span></div>
+        </div>
+        <div class="alarm-controls">
+          <button class="alarm-btn alarm-btn-on" onclick="setVitalScenario('normal')">Normal Patient</button>
+          <button class="alarm-btn alarm-btn-on" onclick="setVitalScenario('hypotension')">Hypotension</button>
+          <button class="alarm-btn alarm-btn-off" onclick="setVitalScenario('tachycardia')">Tachycardia</button>
+          <button class="alarm-btn alarm-btn-off" onclick="setVitalScenario('desaturation')">Desaturation</button>
+          <button class="alarm-btn alarm-btn-off" onclick="setVitalScenario('mh')">Malignant Hyperthermia</button>
+          <button class="alarm-btn alarm-btn-on" onclick="setVitalScenario('pediatric')">Pediatric Patient</button>
+          <button class="alarm-btn alarm-btn-on" onclick="setVitalScenario('obstetric')">Obstetric Patient</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PANEL: AIRWAY ASSESSMENT ═══ -->
+    <div class="hub-panel" id="htab-airway">
+      <p style="color:var(--c-txt2);margin-bottom:1.5rem;font-size:.95rem;">Systematic airway evaluation using validated clinical assessment tools. Early identification of a potentially difficult airway is critical to patient safety.</p>
+      <div class="airway-grid" id="airwayGrid"></div>
+    </div>
+
+    <!-- ═══ PANEL: REGIONAL ANESTHESIA ═══ -->
+    <div class="hub-panel" id="htab-regional">
+      <p style="color:var(--c-txt2);margin-bottom:1.5rem;font-size:.95rem;">Regional anesthesia techniques offer excellent surgical anesthesia and postoperative analgesia while minimizing opioid requirements and systemic side effects.</p>
+      <div class="regional-tabs">
+        <button class="reg-tab active" data-rtab="neuraxial">Neuraxial</button>
+        <button class="reg-tab" data-rtab="upper-limb">Upper Limb Blocks</button>
+        <button class="reg-tab" data-rtab="lower-limb">Lower Limb Blocks</button>
+        <button class="reg-tab" data-rtab="truncal">Truncal Blocks</button>
+      </div>
+      <div id="regionalPanels">
+        <!-- Neuraxial -->
+        <div class="reg-panel active" id="rtab-neuraxial">
+          <div class="reg-technique">
+            <div class="reg-technique__title">💉 Spinal Anesthesia (Subarachnoid Block)</div>
+            <div class="reg-info-grid">
+              <div class="reg-info-item"><div class="reg-info-label">Needle</div><div class="reg-info-value">25G–27G Whitacre/Quincke</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Space</div><div class="reg-info-value">L3–L4 or L4–L5</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Drug</div><div class="reg-info-value">0.5% Heavy Bupivacaine</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Volume</div><div class="reg-info-value">2–3 mL</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Onset</div><div class="reg-info-value">5–10 minutes</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Duration</div><div class="reg-info-value">2–4 hours</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Level Target</div><div class="reg-info-value">T4–T10 (surgery dependent)</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Adjuvants</div><div class="reg-info-value">Fentanyl 10–25 mcg, Morphine 100–200 mcg</div></div>
+            </div>
+            <div class="reg-steps-list">
+              <div class="reg-step"><span class="reg-step-num">1</span>Position patient — sitting or lateral decubitus, maximal lumbar flexion ("fetal position")</div>
+              <div class="reg-step"><span class="reg-step-num">2</span>Identify L3–L4 interspace (at level of iliac crests — Tuffier's line)</div>
+              <div class="reg-step"><span class="reg-step-num">3</span>Strict aseptic technique — chlorhexidine prep, sterile drape, sterile gloves</div>
+              <div class="reg-step"><span class="reg-step-num">4</span>Local infiltration with 1% lidocaine at insertion point</div>
+              <div class="reg-step"><span class="reg-step-num">5</span>Advance spinal needle through skin → subcutaneous → supraspinous ligament → interspinous ligament → ligamentum flavum → epidural space → dura → subarachnoid space</div>
+              <div class="reg-step"><span class="reg-step-num">6</span>Confirm CSF freely flowing; inject local anesthetic ± adjuvant</div>
+              <div class="reg-step"><span class="reg-step-num">7</span>Position patient appropriately for desired block level; assess sensory level with ice/pinprick</div>
+              <div class="reg-step"><span class="reg-step-num">8</span>Monitor BP every 2 min for 15 min — hypotension common (treat with IV fluids/vasopressors)</div>
+            </div>
+            <div class="emerg-drug-box" style="margin-top:1rem;">
+              <strong>⚠ Contraindications:</strong> Patient refusal, coagulopathy (INR &gt;1.5, platelets &lt;80,000), infection at site, raised ICP, uncorrected hypovolaemia, severe AS/MS (relative)
+            </div>
+          </div>
+          <div class="reg-technique">
+            <div class="reg-technique__title">💉 Epidural Anesthesia</div>
+            <div class="reg-info-grid">
+              <div class="reg-info-item"><div class="reg-info-label">Needle</div><div class="reg-info-value">17G–18G Tuohy</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Space</div><div class="reg-info-value">L2–L3, L3–L4, L4–L5 (lumbar)</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">LOR Method</div><div class="reg-info-value">Loss of Resistance to saline or air</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Test Dose</div><div class="reg-info-value">3 mL of 1.5% lidocaine + 15 mcg epi</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Catheter</div><div class="reg-info-value">3–5 cm in epidural space</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Drug (labor)</div><div class="reg-info-value">0.1% Bupivacaine + Fentanyl 2 mcg/mL</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Drug (surgical)</div><div class="reg-info-value">2% Lidocaine or 0.5% Bupivacaine</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Onset</div><div class="reg-info-value">15–30 minutes</div></div>
+            </div>
+            <div class="reg-steps-list">
+              <div class="reg-step"><span class="reg-step-num">1</span>Position as for spinal; identify interspace</div>
+              <div class="reg-step"><span class="reg-step-num">2</span>Advance Tuohy needle with stylet; attach syringe with saline</div>
+              <div class="reg-step"><span class="reg-step-num">3</span>Apply gentle continuous pressure — resistance felt through ligamentum flavum</div>
+              <div class="reg-step"><span class="reg-step-num">4</span>Loss of resistance = epidural space entered</div>
+              <div class="reg-step"><span class="reg-step-num">5</span>Thread catheter — advance 3–5 cm; no resistance should be felt</div>
+              <div class="reg-step"><span class="reg-step-num">6</span>Withdraw needle, secure catheter; administer test dose</div>
+              <div class="reg-step"><span class="reg-step-num">7</span>If no intravascular/intrathecal injection signs → administer therapeutic dose in increments</div>
+              <div class="reg-step"><span class="reg-step-num">8</span>Assess block level; patient can be turned to operating position</div>
+            </div>
+          </div>
+          <div class="reg-technique">
+            <div class="reg-technique__title">💉 Combined Spinal–Epidural (CSE)</div>
+            <div class="reg-info-grid">
+              <div class="reg-info-item"><div class="reg-info-label">Technique</div><div class="reg-info-value">Needle-through-needle or separate spaces</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Advantage</div><div class="reg-info-value">Fast onset (spinal) + prolonged duration (epidural)</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Indication</div><div class="reg-info-value">Labor analgesia, hip/knee arthroplasty</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Spinal drug</div><div class="reg-info-value">Low-dose bupivacaine 5–7.5 mg + fentanyl</div></div>
+            </div>
+          </div>
+        </div>
+        <!-- Upper limb -->
+        <div class="reg-panel" id="rtab-upper-limb">
+          <div class="reg-technique">
+            <div class="reg-technique__title">Interscalene Brachial Plexus Block</div>
+            <div class="reg-info-grid">
+              <div class="reg-info-item"><div class="reg-info-label">Target</div><div class="reg-info-value">C5–C7 (roots/trunks)</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Indication</div><div class="reg-info-value">Shoulder, proximal humerus surgery</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Approach</div><div class="reg-info-value">US-guided at C6 level between scalenes</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Drug</div><div class="reg-info-value">0.5% Ropivacaine 15–20 mL</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Onset</div><div class="reg-info-value">10–20 min</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Duration</div><div class="reg-info-value">12–18 hours</div></div>
+            </div>
+            <div class="emerg-drug-box"><strong>⚠ SE:</strong> Phrenic nerve palsy (100%) → Avoid in severe respiratory disease; Horner's syndrome; RLN palsy; vertebral artery injection risk</div>
+          </div>
+          <div class="reg-technique">
+            <div class="reg-technique__title">Supraclavicular Brachial Plexus Block</div>
+            <div class="reg-info-grid">
+              <div class="reg-info-item"><div class="reg-info-label">Target</div><div class="reg-info-value">Trunks/divisions at 1st rib</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Indication</div><div class="reg-info-value">Hand, forearm, elbow surgery</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Approach</div><div class="reg-info-value">US-guided, lateral to subclavian artery</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Drug</div><div class="reg-info-value">0.5% Ropivacaine 20 mL</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Risk</div><div class="reg-info-value">Pneumothorax (0.5–1% with US)</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Duration</div><div class="reg-info-value">12–18 hours</div></div>
+            </div>
+          </div>
+          <div class="reg-technique">
+            <div class="reg-technique__title">Infraclavicular Brachial Plexus Block</div>
+            <div class="reg-info-grid">
+              <div class="reg-info-item"><div class="reg-info-label">Target</div><div class="reg-info-value">Cords around axillary artery</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Indication</div><div class="reg-info-value">Forearm, wrist, hand surgery</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Advantage</div><div class="reg-info-value">Low pneumothorax risk; good for catheters</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Drug</div><div class="reg-info-value">0.5% Ropivacaine 20–25 mL</div></div>
+            </div>
+          </div>
+          <div class="reg-technique">
+            <div class="reg-technique__title">Axillary Brachial Plexus Block</div>
+            <div class="reg-info-grid">
+              <div class="reg-info-item"><div class="reg-info-label">Target</div><div class="reg-info-value">Terminal nerves around axillary artery</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Indication</div><div class="reg-info-value">Elbow, forearm, hand</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Advantage</div><div class="reg-info-value">Safest BPB — no pneumothorax/phrenic palsy</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Drug</div><div class="reg-info-value">0.5% Ropivacaine 25–30 mL (divided)</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Nerves</div><div class="reg-info-value">Median, radial, ulnar, musculocutaneous</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Duration</div><div class="reg-info-value">8–12 hours</div></div>
+            </div>
+          </div>
+        </div>
+        <!-- Lower limb -->
+        <div class="reg-panel" id="rtab-lower-limb">
+          <div class="reg-technique">
+            <div class="reg-technique__title">Femoral Nerve Block</div>
+            <div class="reg-info-grid">
+              <div class="reg-info-item"><div class="reg-info-label">Target</div><div class="reg-info-value">Femoral nerve (L2–L4) below inguinal ligament</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Indication</div><div class="reg-info-value">Hip fracture, femur surgery, TKA</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Drug</div><div class="reg-info-value">0.5% Ropivacaine 20–30 mL</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Duration</div><div class="reg-info-value">12–24 hours</div></div>
+            </div>
+          </div>
+          <div class="reg-technique">
+            <div class="reg-technique__title">Adductor Canal Block (ACB)</div>
+            <div class="reg-info-grid">
+              <div class="reg-info-item"><div class="reg-info-label">Target</div><div class="reg-info-value">Saphenous nerve in adductor canal</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Indication</div><div class="reg-info-value">TKA, knee arthroscopy</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Advantage</div><div class="reg-info-value">Quadriceps-sparing vs femoral block</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Drug</div><div class="reg-info-value">0.5% Ropivacaine 15–20 mL</div></div>
+            </div>
+          </div>
+          <div class="reg-technique">
+            <div class="reg-technique__title">Sciatic Nerve Block</div>
+            <div class="reg-info-grid">
+              <div class="reg-info-item"><div class="reg-info-label">Target</div><div class="reg-info-value">Sciatic nerve (L4–S3)</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Approaches</div><div class="reg-info-value">Posterior gluteal, subgluteal, popliteal</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Indication</div><div class="reg-info-value">Foot, ankle, below-knee surgery</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Drug</div><div class="reg-info-value">0.5% Ropivacaine 20–30 mL</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Duration</div><div class="reg-info-value">18–36 hours</div></div>
+            </div>
+          </div>
+          <div class="reg-technique">
+            <div class="reg-technique__title">PENG Block (Pericapsular Nerve Group)</div>
+            <div class="reg-info-grid">
+              <div class="reg-info-item"><div class="reg-info-label">Target</div><div class="reg-info-value">Articular branches to hip capsule</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Indication</div><div class="reg-info-value">Hip fracture analgesia, hip arthroplasty</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Advantage</div><div class="reg-info-value">Motor-sparing; deep US-guided</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Drug</div><div class="reg-info-value">0.25% Bupivacaine 20 mL</div></div>
+            </div>
+          </div>
+        </div>
+        <!-- Truncal -->
+        <div class="reg-panel" id="rtab-truncal">
+          <div class="reg-technique">
+            <div class="reg-technique__title">Transversus Abdominis Plane (TAP) Block</div>
+            <div class="reg-info-grid">
+              <div class="reg-info-item"><div class="reg-info-label">Target</div><div class="reg-info-value">Somatic nerve supply to anterior abdominal wall T6–L1</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Indication</div><div class="reg-info-value">Laparotomy, caesarean section, appendicectomy</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Approach</div><div class="reg-info-value">US-guided, in TAP plane between IO and TA</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Drug</div><div class="reg-info-value">0.375% Ropivacaine 20 mL each side</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Advantage</div><div class="reg-info-value">Reduces 24h opioid consumption by 30–50%</div></div>
+            </div>
+          </div>
+          <div class="reg-technique">
+            <div class="reg-technique__title">Erector Spinae Plane (ESP) Block</div>
+            <div class="reg-info-grid">
+              <div class="reg-info-item"><div class="reg-info-label">Target</div><div class="reg-info-value">Dorsal rami + ventral rami via fascial spread</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Indication</div><div class="reg-info-value">Thoracic, abdominal, hip surgery; rib fractures</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Drug</div><div class="reg-info-value">0.375% Ropivacaine 20–30 mL</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Advantage</div><div class="reg-info-value">Safe, away from neuraxis; suitable for anticoagulated patients</div></div>
+            </div>
+          </div>
+          <div class="reg-technique">
+            <div class="reg-technique__title">Rectus Sheath Block</div>
+            <div class="reg-info-grid">
+              <div class="reg-info-item"><div class="reg-info-label">Target</div><div class="reg-info-value">Anterior cutaneous branches T9–T11</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Indication</div><div class="reg-info-value">Laparoscopic umbilical port sites, midline incisions</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Drug</div><div class="reg-info-value">0.25% Bupivacaine 10 mL each side</div></div>
+            </div>
+          </div>
+          <div class="reg-technique">
+            <div class="reg-technique__title">PECS I & II Blocks</div>
+            <div class="reg-info-grid">
+              <div class="reg-info-item"><div class="reg-info-label">Target</div><div class="reg-info-value">PECS I: Pectoral nn. / PECS II: + Long thoracic, thoracodorsal</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Indication</div><div class="reg-info-value">Breast surgery, implant placement, mastectomy</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Drug</div><div class="reg-info-value">0.25% Bupivacaine 10 mL each plane</div></div>
+              <div class="reg-info-item"><div class="reg-info-label">Advantage</div><div class="reg-info-value">Reduces opioid use, PONV; facilitates same-day discharge</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PANEL: EMERGENCY PROTOCOLS ═══ -->
+    <div class="hub-panel" id="htab-emergency">
+      <p style="color:var(--c-neon3);font-family:var(--f-mono);font-size:.78rem;margin-bottom:1.5rem;padding:.75rem 1rem;background:rgba(255,77,126,.06);border:1px solid rgba(255,77,126,.2);border-radius:10px;">⚠ CRITICAL: These are reference protocols. Always follow your institution's guidelines and involve senior personnel in true emergencies.</p>
+      <div class="emerg-grid" id="emergGrid"></div>
+    </div>
+
+    <!-- ═══ PANEL: ASA CLASSIFICATION ═══ -->
+    <div class="hub-panel" id="htab-asa">
+      <p style="color:var(--c-txt2);margin-bottom:1.5rem;font-size:.95rem;">The ASA Physical Status Classification is used to assess and communicate a patient's pre-anesthesia medical comorbidities. It predicts perioperative risk and guides anesthetic planning.</p>
+      <div class="asa-grid" id="asaGrid"></div>
+      <div class="gc" style="padding:1.5rem;margin-top:1.5rem;">
+        <h4 style="font-family:var(--f-display);font-size:1rem;margin-bottom:1rem;">📊 ASA Mortality Statistics</h4>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.75rem;">
+          <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:10px;padding:.85rem;text-align:center;">
+            <div style="font-family:var(--f-mono);font-size:1.2rem;color:#00ff64;font-weight:700;">0.06–0.08%</div>
+            <div style="font-size:.72rem;color:var(--c-txt3);margin-top:.25rem;">ASA I Mortality</div>
+          </div>
+          <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:10px;padding:.85rem;text-align:center;">
+            <div style="font-family:var(--f-mono);font-size:1.2rem;color:var(--c-neon);font-weight:700;">0.27–0.4%</div>
+            <div style="font-size:.72rem;color:var(--c-txt3);margin-top:.25rem;">ASA II Mortality</div>
+          </div>
+          <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:10px;padding:.85rem;text-align:center;">
+            <div style="font-family:var(--f-mono);font-size:1.2rem;color:var(--c-amber);font-weight:700;">1.8–4.3%</div>
+            <div style="font-size:.72rem;color:var(--c-txt3);margin-top:.25rem;">ASA III Mortality</div>
+          </div>
+          <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:10px;padding:.85rem;text-align:center;">
+            <div style="font-family:var(--f-mono);font-size:1.2rem;color:var(--c-neon3);font-weight:700;">7.8–23%</div>
+            <div style="font-size:.72rem;color:var(--c-txt3);margin-top:.25rem;">ASA IV Mortality</div>
+          </div>
+          <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:10px;padding:.85rem;text-align:center;">
+            <div style="font-family:var(--f-mono);font-size:1.2rem;color:#ef4444;font-weight:700;">&gt;50%</div>
+            <div style="font-size:.72rem;color:var(--c-txt3);margin-top:.25rem;">ASA V Mortality</div>
+          </div>
+          <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:10px;padding:.85rem;text-align:center;">
+            <div style="font-family:var(--f-mono);font-size:1.2rem;color:#9f1239;font-weight:700;">N/A</div>
+            <div style="font-size:.72rem;color:var(--c-txt3);margin-top:.25rem;">ASA VI (Brain-dead)</div>
+          </div>
+        </div>
+        <p style="font-size:.78rem;color:var(--c-txt3);margin-top:1rem;">* Adding 'E' suffix (e.g. ASA IVE) denotes emergency surgery, increasing mortality risk by 2–3 fold. The classification does not predict individual patient risk — it is a communication tool.</p>
+      </div>
+    </div>
+
+    <!-- ═══ PANEL: PRE-OP CHECKLIST ═══ -->
+    <div class="hub-panel" id="htab-checklist">
+      <p style="color:var(--c-txt2);margin-bottom:1.5rem;font-size:.95rem;">The pre-anesthesia checklist is a critical patient safety tool that should be completed before every anesthetic. Check each item before proceeding.</p>
+      <div class="checklist-card">
+        <div class="checklist-progress">
+          <div class="checklist-bar"><div class="checklist-bar-fill" id="checklistFill" style="width:0%"></div></div>
+          <span class="checklist-pct" id="checklistPct">0%</span>
+          <button class="checklist-reset" onclick="resetChecklist()">Reset</button>
+        </div>
+        <div id="checklistBody"></div>
+      </div>
+    </div>
+
+    <!-- ═══ PANEL: DOSE CALCULATOR ═══ -->
+    <div class="hub-panel" id="htab-dose-calc">
+      <p style="color:var(--c-txt2);margin-bottom:1.5rem;font-size:.95rem;">Weight-based drug dose calculator for common anesthetic agents. Always verify doses with current institutional protocols and drug references.</p>
+      <div class="calc-card">
+        <div class="calc-form">
+          <div class="calc-row">
+            <div>
+              <label class="calc-label">Patient Weight (kg)</label>
+              <input class="calc-input" type="number" id="calcWeight" placeholder="e.g. 70" min="1" max="300" value="70"/>
+            </div>
+            <div>
+              <label class="calc-label">Age (years)</label>
+              <input class="calc-input" type="number" id="calcAge" placeholder="e.g. 35" min="0" max="120" value="35"/>
+            </div>
+          </div>
+          <div class="calc-row">
+            <div>
+              <label class="calc-label">Gender</label>
+              <select class="calc-select" id="calcGender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <div>
+              <label class="calc-label">ASA Class</label>
+              <select class="calc-select" id="calcASA">
+                <option value="1">ASA I</option>
+                <option value="2" selected>ASA II</option>
+                <option value="3">ASA III</option>
+                <option value="4">ASA IV</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="calc-label">Drug / Agent</label>
+            <select class="calc-select" id="calcDrug">
+              <option value="propofol">Propofol (Induction)</option>
+              <option value="propofol-maint">Propofol (Maintenance TIVA)</option>
+              <option value="ketamine">Ketamine (Induction)</option>
+              <option value="ketamine-sub">Ketamine (Sub-dissociative/Analgesic)</option>
+              <option value="midazolam">Midazolam (Premedication)</option>
+              <option value="midazolam-iv">Midazolam (IV Sedation)</option>
+              <option value="fentanyl">Fentanyl (Intraoperative)</option>
+              <option value="morphine">Morphine (Analgesic)</option>
+              <option value="succinylcholine">Succinylcholine (RSI)</option>
+              <option value="rocuronium">Rocuronium (Intubation)</option>
+              <option value="rocuronium-rsii">Rocuronium (RSII)</option>
+              <option value="vecuronium">Vecuronium (Maintenance)</option>
+              <option value="atracurium">Atracurium (Maintenance)</option>
+              <option value="neostigmine">Neostigmine (Reversal)</option>
+              <option value="atropine">Atropine (Bradycardia)</option>
+              <option value="ephedrine">Ephedrine (Hypotension)</option>
+              <option value="phenylephrine">Phenylephrine (Hypotension)</option>
+              <option value="dexamethasone">Dexamethasone (PONV Prophylaxis)</option>
+              <option value="ondansetron">Ondansetron (PONV Prophylaxis)</option>
+              <option value="paracetamol">Paracetamol IV (Analgesic)</option>
+              <option value="lidocaine-iv">Lidocaine IV (Antiarrhythmic/Analgesic)</option>
+              <option value="thiopental">Thiopental (Induction)</option>
+              <option value="etomidate">Etomidate (Induction)</option>
+              <option value="dexmedetomidine">Dexmedetomidine (Sedation)</option>
+              <option value="sugammadex">Sugammadex (Deep NMBA Reversal)</option>
+            </select>
+          </div>
+          <div>
+            <label class="calc-label">Clinical Scenario</label>
+            <select class="calc-select" id="calcScenario">
+              <option value="standard">Standard Adult</option>
+              <option value="elderly">Elderly (&gt;65 yrs) — Reduce by 25–30%</option>
+              <option value="obese">Obese — Lean Body Weight dosing</option>
+              <option value="pediatric">Paediatric (&lt;12 yrs)</option>
+              <option value="cardiac">Cardiac Disease — Careful titration</option>
+              <option value="hepatic">Hepatic Impairment — Reduce dose</option>
+              <option value="renal">Renal Impairment</option>
+            </select>
+          </div>
+          <button class="calc-btn" onclick="calculateDose()">🧮 Calculate Dose</button>
+        </div>
+        <div class="calc-results" id="calcResults">
+          <h4 style="font-family:var(--f-display);font-size:1rem;margin-bottom:1rem;">Calculated Doses</h4>
+          <div class="calc-results-grid" id="calcResultsGrid"></div>
+          <div class="calc-warning" id="calcWarning"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PANEL: DRUG INTERACTIONS ═══ -->
+    <div class="hub-panel" id="htab-interactions">
+      <p style="color:var(--c-txt2);margin-bottom:1.5rem;font-size:.95rem;">Check for clinically significant interactions between commonly used anesthetic drugs. This tool covers major interactions relevant to anesthetic practice.</p>
+      <div class="drug-interaction-card">
+        <h4 style="font-family:var(--f-display);font-size:1.1rem;margin-bottom:1rem;">Drug Interaction Checker</h4>
+        <div class="drug-interaction-grid">
+          <div>
+            <label class="calc-label">Drug 1</label>
+            <select class="calc-select" id="dint1">
+              <option value="">Select drug…</option>
+              <option value="propofol">Propofol</option>
+              <option value="ketamine">Ketamine</option>
+              <option value="fentanyl">Fentanyl</option>
+              <option value="midazolam">Midazolam</option>
+              <option value="succinylcholine">Succinylcholine</option>
+              <option value="rocuronium">Rocuronium</option>
+              <option value="neostigmine">Neostigmine</option>
+              <option value="atropine">Atropine</option>
+              <option value="ephedrine">Ephedrine</option>
+              <option value="dexmedetomidine">Dexmedetomidine</option>
+              <option value="haloperidol">Haloperidol</option>
+              <option value="suxamethonium">Suxamethonium</option>
+              <option value="sevoflurane">Sevoflurane</option>
+              <option value="remifentanil">Remifentanil</option>
+              <option value="ondansetron">Ondansetron</option>
+            </select>
+          </div>
+          <div>
+            <label class="calc-label">Drug 2</label>
+            <select class="calc-select" id="dint2">
+              <option value="">Select drug…</option>
+              <option value="propofol">Propofol</option>
+              <option value="ketamine">Ketamine</option>
+              <option value="fentanyl">Fentanyl</option>
+              <option value="midazolam">Midazolam</option>
+              <option value="succinylcholine">Succinylcholine</option>
+              <option value="rocuronium">Rocuronium</option>
+              <option value="neostigmine">Neostigmine</option>
+              <option value="atropine">Atropine</option>
+              <option value="ephedrine">Ephedrine</option>
+              <option value="dexmedetomidine">Dexmedetomidine</option>
+              <option value="haloperidol">Haloperidol</option>
+              <option value="suxamethonium">Suxamethonium</option>
+              <option value="sevoflurane">Sevoflurane</option>
+              <option value="remifentanil">Remifentanil</option>
+              <option value="ondansetron">Ondansetron</option>
+            </select>
+          </div>
+        </div>
+        <button class="dint-check-btn" onclick="checkDrugInteraction()">⚗️ Check Interaction</button>
+        <div class="dint-result" id="dintResult"></div>
+        <div class="ct-ponder-box" id="ctPonderBox" style="display:none;">
+          <div class="ct-ponder-hdr">🤔 Clinical Critical Thinking Prompt</div>
+          <p class="ct-ponder-txt">Ponder: How does a patient's kidney or liver function alter these drug interaction parameters? Consider that reduced renal clearance prolongs drug action and raises plasma concentrations, while hepatic impairment affects first-pass metabolism, protein binding (↓albumin → ↑free drug fraction), and cytochrome P450 activity — all of which can intensify or prolong interactions not flagged in healthy-population databases.</p>
+          <div class="ct-ponder-cues">
+            <span class="ct-cue">CrCl &lt; 30 mL/min?</span>
+            <span class="ct-cue">Child-Pugh Class?</span>
+            <span class="ct-cue">Protein binding ↓?</span>
+            <span class="ct-cue">CYP450 substrate?</span>
+            <span class="ct-cue">Narrow therapeutic index?</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══ PANEL: PHARMACOKINETICS ═══ -->
+    <div class="hub-panel" id="htab-pk">
+      <p style="color:var(--c-txt2);margin-bottom:1.5rem;font-size:.95rem;">Understanding pharmacokinetics (PK) is fundamental to safe anesthetic practice. PK describes what the body does to a drug — absorption, distribution, metabolism, and excretion (ADME).</p>
+      <div class="pk-tabs">
+        <button class="pk-tab active" data-pktab="induction">Induction Agents</button>
+        <button class="pk-tab" data-pktab="opioids">Opioids</button>
+        <button class="pk-tab" data-pktab="nmba">NMBAs</button>
+        <button class="pk-tab" data-pktab="volatiles">Volatile Agents</button>
+      </div>
+      <div id="pkPanels">
+        <div class="pk-panel active" id="pktab-induction">
+          <div class="pk-table-wrap">
+            <table class="pk-table">
+              <thead>
+                <tr>
+                  <th>Drug</th>
+                  <th>Onset</th>
+                  <th>Duration</th>
+                  <th>Vd (L/kg)</th>
+                  <th>t½β</th>
+                  <th>Protein Binding</th>
+                  <th>Metabolism</th>
+                  <th>Excretion</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Propofol</td><td>30–60 s</td><td>5–10 min</td><td>4–6</td><td>1–3 h</td><td>98%</td><td>Hepatic (CYP)</td><td>Renal 88%</td></tr>
+                <tr><td>Thiopental</td><td>30–60 s</td><td>5–10 min</td><td>1.4–2.3</td><td>11–12 h</td><td>85%</td><td>Hepatic</td><td>Renal</td></tr>
+                <tr><td>Ketamine</td><td>30–60 s IV</td><td>10–15 min</td><td>3.5–4</td><td>2.5–3 h</td><td>27%</td><td>Hepatic → norketamine</td><td>Renal</td></tr>
+                <tr><td>Etomidate</td><td>30–60 s</td><td>5–15 min</td><td>4.5</td><td>75 min</td><td>75%</td><td>Ester hydrolysis</td><td>Renal 85%</td></tr>
+                <tr><td>Midazolam</td><td>1–2 min IV</td><td>15–30 min</td><td>1.1–1.7</td><td>1.7–2.6 h</td><td>97%</td><td>CYP3A4</td><td>Renal</td></tr>
+                <tr><td>Dexmedetomidine</td><td>15 min</td><td>60–120 min</td><td>1.33</td><td>2 h</td><td>94%</td><td>Glucuronidation</td><td>Renal 95%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="pk-panel" id="pktab-opioids">
+          <div class="pk-table-wrap">
+            <table class="pk-table">
+              <thead>
+                <tr>
+                  <th>Drug</th>
+                  <th>Onset IV</th>
+                  <th>Peak Effect</th>
+                  <th>Duration</th>
+                  <th>Vd (L/kg)</th>
+                  <th>t½β</th>
+                  <th>Protein Binding</th>
+                  <th>Metabolism</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Morphine</td><td>5–10 min</td><td>20–30 min</td><td>3–5 h</td><td>3–5</td><td>2–4 h</td><td>35%</td><td>Hepatic → M-6-G (active)</td></tr>
+                <tr><td>Fentanyl</td><td>1–2 min</td><td>3–5 min</td><td>30–60 min</td><td>4–6</td><td>3.7 h</td><td>80–85%</td><td>Hepatic CYP3A4</td></tr>
+                <tr><td>Sufentanil</td><td>1–2 min</td><td>3–5 min</td><td>20–45 min</td><td>1.7</td><td>2.5 h</td><td>93%</td><td>Hepatic</td></tr>
+                <tr><td>Remifentanil</td><td>1 min</td><td>1–2 min</td><td>5–10 min</td><td>0.35</td><td>3–10 min</td><td>80%</td><td>Non-specific esterases</td></tr>
+                <tr><td>Alfentanil</td><td>1 min</td><td>1–2 min</td><td>15–20 min</td><td>0.5–1</td><td>90 min</td><td>92%</td><td>Hepatic CYP3A4</td></tr>
+                <tr><td>Pethidine</td><td>2–5 min</td><td>5–15 min</td><td>2–4 h</td><td>4.5</td><td>3–5 h</td><td>70%</td><td>Hepatic → norpethidine (toxic)</td></tr>
+                <tr><td>Tramadol</td><td>10–20 min</td><td>30 min</td><td>6 h</td><td>2.7</td><td>6 h</td><td>20%</td><td>CYP2D6 → O-desmethyl (active)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="pk-panel" id="pktab-nmba">
+          <div class="pk-table-wrap">
+            <table class="pk-table">
+              <thead>
+                <tr>
+                  <th>Drug</th>
+                  <th>Onset</th>
+                  <th>Intubation Dose</th>
+                  <th>Duration</th>
+                  <th>Metabolism</th>
+                  <th>Reversal</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Succinylcholine</td><td>60 s</td><td>1–1.5 mg/kg</td><td>5–10 min</td><td>Plasma cholinesterase</td><td>Spontaneous</td><td>Depolarizing; RSI agent</td></tr>
+                <tr><td>Rocuronium</td><td>60–90 s</td><td>0.6 mg/kg</td><td>30–45 min</td><td>Hepatic/biliary</td><td>Sugammadex/neostigmine</td><td>RSII at 1.2 mg/kg</td></tr>
+                <tr><td>Vecuronium</td><td>3–5 min</td><td>0.1 mg/kg</td><td>25–40 min</td><td>Hepatic 80%</td><td>Neostigmine</td><td>Cardiac stable; hepatic disease caution</td></tr>
+                <tr><td>Atracurium</td><td>3–5 min</td><td>0.5 mg/kg</td><td>25–45 min</td><td>Hofmann + ester</td><td>Neostigmine</td><td>Safe in renal/hepatic failure; histamine release</td></tr>
+                <tr><td>Cisatracurium</td><td>3–5 min</td><td>0.15 mg/kg</td><td>40–75 min</td><td>Hofmann</td><td>Neostigmine</td><td>No histamine; preferred in ICU</td></tr>
+                <tr><td>Pancuronium</td><td>3–5 min</td><td>0.1 mg/kg</td><td>60–90 min</td><td>Renal 70%</td><td>Neostigmine</td><td>Tachycardia; long-acting</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="pk-panel" id="pktab-volatiles">
+          <div class="pk-table-wrap">
+            <table class="pk-table">
+              <thead>
+                <tr>
+                  <th>Agent</th>
+                  <th>MAC (%)</th>
+                  <th>Blood:Gas λ</th>
+                  <th>Oil:Gas λ</th>
+                  <th>SVP (mmHg)</th>
+                  <th>Onset/Offset</th>
+                  <th>Hepatotoxicity</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Sevoflurane</td><td>2.0</td><td>0.63</td><td>47</td><td>157</td><td>Fast/Fast</td><td>Very low</td><td>Pleasant smell; paediatric induction; Compound A</td></tr>
+                <tr><td>Desflurane</td><td>6.0</td><td>0.42</td><td>18.7</td><td>664</td><td>Fastest</td><td>Minimal</td><td>Needs heated vaporiser; pungent; coughing</td></tr>
+                <tr><td>Isoflurane</td><td>1.15</td><td>1.46</td><td>90.8</td><td>238</td><td>Medium</td><td>Rare</td><td>Coronary steal; pungent</td></tr>
+                <tr><td>Halothane</td><td>0.75</td><td>2.3</td><td>224</td><td>241</td><td>Slow</td><td>Significant (1:20,000 fulminant)</td><td>Halothane hepatitis; MH trigger; used in LMICs</td></tr>
+                <tr><td>Nitrous Oxide</td><td>104</td><td>0.47</td><td>1.4</td><td>Gas</td><td>Fast</td><td>None</td><td>Cannot achieve GA alone; expansion of gas cavities</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="gc" style="padding:1.25rem;margin-top:1rem;">
+            <h4 style="font-family:var(--f-display);font-size:.95rem;margin-bottom:.75rem;">Key Volatile Concepts</h4>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.6rem;">
+              <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:8px;padding:.75rem;">
+                <div style="font-family:var(--f-mono);font-size:.68rem;color:var(--c-neon);margin-bottom:.3rem;">MAC</div>
+                <div style="font-size:.8rem;color:var(--c-txt2);">Minimum Alveolar Concentration — the % at which 50% of patients do not respond to a standard surgical incision</div>
+              </div>
+              <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:8px;padding:.75rem;">
+                <div style="font-family:var(--f-mono);font-size:.68rem;color:var(--c-neon);margin-bottom:.3rem;">Blood:Gas Coefficient</div>
+                <div style="font-size:.8rem;color:var(--c-txt2);">Lower = faster onset/offset (desflurane fastest). Reflects solubility in blood — less soluble = faster equilibration</div>
+              </div>
+              <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:8px;padding:.75rem;">
+                <div style="font-family:var(--f-mono);font-size:.68rem;color:var(--c-neon);margin-bottom:.3rem;">Oil:Gas Coefficient</div>
+                <div style="font-size:.8rem;color:var(--c-txt2);">Reflects lipid solubility — predicts anesthetic potency (Meyer-Overton rule). Higher = more potent</div>
+              </div>
+              <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:8px;padding:.75rem;">
+                <div style="font-family:var(--f-mono);font-size:.68rem;color:var(--c-neon);margin-bottom:.3rem;">MH Triggers</div>
+                <div style="font-size:.8rem;color:var(--c-txt2);">All halogenated volatiles + succinylcholine trigger MH in susceptible individuals. Use TIVA + non-depolarizing NMBA in MH-susceptible patients</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PANEL: ANESTHESIA MACHINE ═══ -->
+    <div class="hub-panel" id="htab-machine">
+      <p style="color:var(--c-txt2);margin-bottom:1.5rem;font-size:.95rem;">The anesthesia machine (workstation) is a complex medical device that delivers anesthetic gases and oxygen to patients. Understanding its components is essential for safe practice.</p>
+      <div class="machine-diagram">
+        <h4 style="font-family:var(--f-display);font-size:1.1rem;margin-bottom:1.5rem;">🔧 Anesthesia Machine Components</h4>
+        <div class="machine-components-grid" id="machineGrid"></div>
+      </div>
+      <div class="gc" style="padding:1.5rem;margin-top:1.25rem;">
+        <h4 style="font-family:var(--f-display);font-size:1rem;margin-bottom:1rem;">Pre-Use Machine Check (Abbreviated)</h4>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.6rem;">
+          <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:8px;padding:.75rem;display:flex;gap:.6rem;align-items:flex-start;">
+            <span style="color:var(--c-emerald);font-weight:700;flex-shrink:0;">1.</span>
+            <div style="font-size:.82rem;color:var(--c-txt2);">Check pipeline and cylinder pressures — O₂ pipeline 400 kPa, N₂O pipeline 400 kPa</div>
+          </div>
+          <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:8px;padding:.75rem;display:flex;gap:.6rem;align-items:flex-start;">
+            <span style="color:var(--c-emerald);font-weight:700;flex-shrink:0;">2.</span>
+            <div style="font-size:.82rem;color:var(--c-txt2);">Check O₂ fail-safe — disconnect O₂ → N₂O should cut off; hypoxic guard functioning</div>
+          </div>
+          <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:8px;padding:.75rem;display:flex;gap:.6rem;align-items:flex-start;">
+            <span style="color:var(--c-emerald);font-weight:700;flex-shrink:0;">3.</span>
+            <div style="font-size:.82rem;color:var(--c-txt2);">Check flowmeters — O₂, N₂O, air flow smoothly and accurately</div>
+          </div>
+          <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:8px;padding:.75rem;display:flex;gap:.6rem;align-items:flex-start;">
+            <span style="color:var(--c-emerald);font-weight:700;flex-shrink:0;">4.</span>
+            <div style="font-size:.82rem;color:var(--c-txt2);">Check vaporiser — filled, correctly mounted, no tipping, interlock working</div>
+          </div>
+          <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:8px;padding:.75rem;display:flex;gap:.6rem;align-items:flex-start;">
+            <span style="color:var(--c-emerald);font-weight:700;flex-shrink:0;">5.</span>
+            <div style="font-size:.82rem;color:var(--c-txt2);">Check breathing circuit — no leaks, correct connections, fresh gas flow outlet</div>
+          </div>
+          <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:8px;padding:.75rem;display:flex;gap:.6rem;align-items:flex-start;">
+            <span style="color:var(--c-emerald);font-weight:700;flex-shrink:0;">6.</span>
+            <div style="font-size:.82rem;color:var(--c-txt2);">Check soda lime — colour appropriate, no harness (granule hardening)</div>
+          </div>
+          <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:8px;padding:.75rem;display:flex;gap:.6rem;align-items:flex-start;">
+            <span style="color:var(--c-emerald);font-weight:700;flex-shrink:0;">7.</span>
+            <div style="font-size:.82rem;color:var(--c-txt2);">Check ventilator — test with test lung; PEEP, rate, tidal volume settings</div>
+          </div>
+          <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:8px;padding:.75rem;display:flex;gap:.6rem;align-items:flex-start;">
+            <span style="color:var(--c-emerald);font-weight:700;flex-shrink:0;">8.</span>
+            <div style="font-size:.82rem;color:var(--c-txt2);">Check monitors — ECG, SpO₂, NIBP, EtCO₂, vapour analyser, temperature probe</div>
+          </div>
+          <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:8px;padding:.75rem;display:flex;gap:.6rem;align-items:flex-start;">
+            <span style="color:var(--c-emerald);font-weight:700;flex-shrink:0;">9.</span>
+            <div style="font-size:.82rem;color:var(--c-txt2);">Check suction — powerful, working, Yankauer catheter connected</div>
+          </div>
+          <div style="background:var(--c-glass);border:1px solid var(--c-border);border-radius:8px;padding:.75rem;display:flex;gap:.6rem;align-items:flex-start;">
+            <span style="color:var(--c-emerald);font-weight:700;flex-shrink:0;">10.</span>
+            <div style="font-size:.82rem;color:var(--c-txt2);">Check airway equipment — ETT, LMA, videolaryngoscope, bougie, difficult airway kit accessible</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PANEL: CASE STUDIES ═══ -->
+    <div class="hub-panel" id="htab-cases">
+      <p style="color:var(--c-txt2);margin-bottom:1.5rem;font-size:.95rem;">Clinical case scenarios designed to develop critical thinking in anesthetic management. Analyze each case and formulate your approach before revealing the answer.</p>
+      <div class="case-grid" id="caseGrid"></div>
+    </div>
+
+    <!-- ═══ PANEL: QUIZ ═══ -->
+    <div class="hub-panel" id="htab-quiz">
+      <p style="color:var(--c-txt2);margin-bottom:1.5rem;font-size:.95rem;">Test your anesthesia knowledge with 25 clinically relevant questions spanning pharmacology, monitoring, airway management, and emergency protocols.</p>
+      <div class="quiz-card">
+        <div id="quizContainer">
+          <div class="quiz-progress">
+            <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizProgressFill" style="width:0%"></div></div>
+            <span class="quiz-counter" id="quizCounter">Q 1 / 25</span>
+          </div>
+          <div class="quiz-question" id="quizQuestion">Loading question...</div>
+          <div class="quiz-options" id="quizOptions"></div>
+          <div class="quiz-feedback" id="quizFeedback"></div>
+          <div class="quiz-actions">
+            <button class="quiz-next-btn" id="quizNext" onclick="nextQuizQuestion()">Next Question →</button>
+          </div>
+        </div>
+        <div class="quiz-score" id="quizScore">
+          <span class="quiz-score-val" id="quizScoreVal">0/25</span>
+          <div class="quiz-score-msg" id="quizScoreMsg">Well done!</div>
+          <button class="quiz-restart-btn" onclick="restartQuiz()">Restart Quiz 🔄</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
 
 <!-- ═══════════════════════════════════════════════════════════════════
      💻 WEB DEV MASTERY SECTION
@@ -3652,11 +4645,26 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
      JAVASCRIPT — ORIGINAL + NEW ADDITIONS
 ═══════════════════════════════════════════ -->
 <script>
+          // Wait 3.5 seconds, then fade out the loader
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      var loader = document.getElementById('loaderScreen');
+      
+      // Start fading out
+      loader.style.opacity = '0';
+      
+      // After fade finishes (0.8s), hide it completely
+      setTimeout(function() {
+        loader.style.display = 'none';
+      }, 800);
+
+    }, 2000); // 3500 = 3.5 seconds of loading screen
+  });
 'use strict';
 
 /* ═══ DATA ═══ */
 const DATA = {
-   projects: [
+  projects: [
     {id:'nova',title:'WOU ANESTHESIA DEPARTMENT PORTAL',
      cat:'Design System',filter:'design',
      desc:'Designed and developed over 5 months, a centralized departmental portal for Wollo University nesthesia Department, streamlining student management,clinical scheduling, academic resources, and administrative workflows through a secure and intuitive interface',
@@ -3767,7 +4775,7 @@ const DATA = {
 
       {label:'GRADE-9',    type:'photos',  cat:'photos',  placeholder:'🏥',
      img:'images/abu.jpg',
-     imgHD:'images/ab.jpg',
+     imgHD:'images/abu.jpg',
      color:'rgba(0,229,160,.12)',
      mem:{date:'Feb 2021 — Present',tags:['🏥 Operating Room','🩺 Anesthesia','🎓 Clinical Training','💉 Patient Safety'],
       story:'የመጀመሪያው መንፈቅ (1st Semester)፡ በባዕድ ስሜትና በብቸኝነት መሃል የ9ኛ ክፍል ጅማሬ ለእኔ ቀላል አልነበረም። አዲስ ትምህርት ቤት፣ አዲስ አካባቢና ፈጽሞ የማላውቃቸው በመቶዎች የሚቆጠሩ አዳዲስ ፊቶች ተከበውኝ ነበር። እኔ ደግሞ ተፈጥሮዬ ዝምተኛ፣ ብዙ ከሰው የማልቀላቀልና በራሴ ዓለም ውስጥ መሆን የምመርጥ ልጅ ነበርኩ። በዚያ ላይ በትምህርቱም ላይ ብዙም ትኩረት አልነበረኝም፤ ልቤና አእምሮዬ ሌላ ቦታ ነበሩ። የመጀመሪያው መንፈቅ ዓመት (First Semester) ሲጠናቀቅ አሁንም ድረስ ትምህርት ቤቱ ውስጥ ማንን ያህል የማላውቅ፣ ራሴን ያገለልኩና ብቸኛ የሆንኩ ተማሪ ነበርኩ። በክፍል ውስጥ ብቻዬን የመጨረሻው ወንበር ላይ ተቀምጬ ሰዓቱ እስኪያልቅ የምቆጥርባቸው ቀናት ቀላል አልነበሩም።ያልተጠበቀው ለውጥ፡ "ጄ ክፍል" (J-Class) ሁለተኛው መንፈቅ ዓመት (Second Semester) ሲጀምር ግን ህይወት ሌላ ምዕራፍ ይዛልኝ መጣች። ወደ "ጄ ክፍል" (J-Class) ተመደብኩ። እዚህ ክፍል ውስጥ መጀመሪያ ላይ ያው እንደለመድኩት ለብቻዬ መሆንን መርጬ የነበረ ቢሆንም፣ ቀስ በቀስ ግን ህይወቴን ሙሉ በሙሉ የሚቀይሩ ነገሮች መከሰት ጀመሩ። በብቸኝነት ይኖራት የነበረችው ዓለሜ በአዳዲስ ጓደኞችና በደማቅ ሳቆች መሞላት ጀመረች። የወንድማማችነት ጥምረት፡ ቸኮሌት (Checolate)፣ አበበ፣ አቡዬ እና ሌሎችም...ያ በጸጥታ ክፍል ውስጥ ብቻውን ይቀመጥ የነበረው ልጅ፣ አሁን የክፍሉ ደማቅ የወዳጅነት ማዕከል ሆነ። በዚህ ክፍል ውስጥ ነበር የልብ ጓደኞቼን ያፈራሁት። ቸኮሌት (Checolate) በጣፋጭ ጨዋታውና በቀልዱ፣ አበበ በደማቅ ሳቁና በልዩ ባህሪው፣ አቡዬ ደግሞ በቅንነቱና ታማኝነቱ... ሁላችንም በአንድ ላይ ታሪክ የማይረሳው ጠንካራ ጥምረት ፈጠርን። በትምህርት ላይ ብዙም ትኩረት ባይኖረኝም፣ ከጓደኞቼ ጋር የምናሳልፈው እያንዳንዱ ደቂቃ ግን ትምህርት ቤቱን እንድወደው አደረገኝ። ከክፍል ጀርባ የምናደርገው ሹክሹክታ፣ የምንጋራው ምሳ፣ እርስ በርስ የምንቀላለደው ቀልድ እና ያሳለፍነው የወጣትነት የዋህነት ጊዜ "ጄ ክፍልን" ለእኛ ከክፍል በላይ የደስታ መጠለያችን አደረጋት። 9ኛ ክፍል ሲጠናቀቅ የተረዳሁት ነገር ቢኖር፣ በህይወት ውስጥ ትልቅ ውጤት ከማምጣት በላይ፣ እንደ ወንድም የሚሆኑ እውነተኛ ጓደኞችን ማግኘት ምን ያህል ትልቅ ዋጋ እንዳለው ነበር። ያ ከብቸኝነት የጀመረው ጉዞ በልዩ ወንድማማችነት ተደምድሞ ሁልጊዜ በናፍቆት የማስታውሰው ትዝታ ሆኖ ቀረ። ',
@@ -3788,7 +4796,7 @@ const DATA = {
       story:' የ9ኛ ክፍል የ"ጄ ክፍል" (J-Class) ደማቅና የማይረሳ ወንድማማችነት አሻራውን ጥሎ ካለፈ በኋላ፣ የ10ኛ ክፍል መጀመሪያ ሌላ አዲስ ፈተና ይዞ መጣ። ወደ "ኤፍ ክፍል" (F-Class) ተዛወርኩ። ከቀድሞዎቹ የልብ ጓደኞቼ ጋር መለያየቴ መጀመሪያ ላይ የባዶነት ስሜት ቢፈጥርብኝም፣ ይህ ክፍል ግን ብዙ አዳዲስ ሰዎችን የማውቅበትና ሰፊ ማኅበራዊ ሕይወት ውስጥ የምገባበት በር ሆነልኝ። ከብቸኝነትና ከተወሰኑ ጓደኞች ዓለም ወጥቼ ከብዙ ዓይነት ባህሪና ስብዕና ካላቸው ተማሪዎች ጋር መላመድ ጀመርኩ። "ኤፍ ክፍል" ለእኔ የሰዎች መገናኛ ድልድይ ነበረች።የሕይወት ትምህርት ቤት፡ የጥሩውና የመጥፎው ጎን ሚዛንይህ የ10ኛ ክፍል ዓመቴ በትምህርት ቤት ደብተር ላይ ከሚጻፈው ዕውቀት በላይ፣ ስለ ሕይወት እውነተኛ ማንነት ብዙ የተማርኩበት ትልቅ መድረኬ ነበር። ሕይወት ልክ እንደ ቀለማት ሁሉ ብሩህና ጥቁር ጎን እንዳላት በተግባር አየሁ።ጥሩው ጎን (The Bright Side)፦ አዳዲስ ጓደኞችን ማፍራት፣ ከተለያዩ አስተሳሰቦች ጋር መላመድ፣ መሪ መሆንንና በሰዎች መካከል ተፅዕኖ መፍጠርን የተማርኩበት ወቅት ነበር። እርስ በርስ መረዳዳት፣ አዳዲስ የሳቅና የጨዋታ አጋጣሚዎች፣ እና ማኅበራዊ ክህሎቴ ያደገበት ወርቃማ ጎን ነበረው።መጥፎው ጎን (The Dark Side)፦ በሌላ በኩል ደግሞ የሰዎችን ሁለት ገጽታ፣ ግብዝነትን፣ የግጭትና የመከዳዳት ስሜቶችን በቅርበት ያስተዋልክበትም ነበር። ሁሉም ሰው እንደምናስበው ቅን እንዳልሆነ፣ በወዳጅነት ስም ውስጥም ፉክክርና ክፋት ሊኖር እንደሚችል የተረዳሁት እዚህ ክፍል ውስጥ ነው። እነዚህ መጥፎ አጋጣሚዎች ግን አልሰበሩኝም፤ ይልቁንም ሰዎችን እንዴት መመዘን እንዳለብኝና ራሴን እንዴት መጠበቅ እንደሚገባኝ ያስተማሩኝ የሕይወት ክትባቶቼ ነበሩ።',
       imgs:['https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=800',
             'images/gela.jpg',
-            'images/gela1.jpg',
+            'images/gela.jpg',
             'images/marsss.jpg',
             'images/burte.jpg',
             'https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=800'],
@@ -4934,7 +5942,7 @@ function openProjModal(id){
     <div class="modal-highs">${p.highlights.map(h=>`<div class="modal-high"><div class="mh-ico">${h.i}</div><div class="mh-info"><h4>${h.t}</h4><p>${h.d}</p></div></div>`).join('')}</div>
     <div class="modal-stack-lbl">Tech Stack</div>
     <div class="modal-tags">${p.tech.map(t=>`<span class="modal-tag">${t}</span>`).join('')}</div>
-    <div class="modal-actions"><a class="btn-primary" href="${p.links.live}" target="_blank" rel="noopener">View Live →</a><a class="btn-outline" href="${p.links.github}" target="_blank" rel="noopener">Source Code</a></div>`;
+    <div class="modal-actions"><a class="btn-primary" href="${p.links.live}" target="_blank" rel="noopener">View work→</a><a class="btn-outline" href="${p.links.github}" target="_blank" rel="noopener">COMUNICATE</a></div>`;
   projModal.classList.add('open');projModal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
 }
 
