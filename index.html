@@ -2457,45 +2457,30 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
        xmlns="http://www.w3.org/2000/svg"
        style="overflow:visible;display:block;">
 
-    <style>
-         .loader-avatar{
+<style>
+
+/* IMAGE */
+.loader-avatar{
     width:120px;
     height:120px;
     margin-bottom:20px;
     overflow:hidden;
+
     animation:
       shapeCircle 0.5s forwards,
       shapeRectangle 0.5s 0.5s forwards,
-      shapeHexagon 0.5s 1s forwards;
-              shapePentagon 0.5s 1.5s forwards;
+      shapeHexagon 0.5s 1s forwards,
+      shapePentagon 0.5s 1.5s forwards;
 }
 
 .loader-avatar img{
     width:100%;
     height:100%;
     object-fit:cover;
+    display:block;
 }
-@keyframes shapePentagon{
-    from{
-        clip-path: polygon(
-            25% 5%,
-            75% 5%,
-            100% 50%,
-            75% 95%,
-            25% 95%,
-            0% 50%
-        );
-    }
-    to{
-        clip-path: polygon(
-            50% 0%,
-            100% 38%,
-            82% 100%,
-            18% 100%,
-            0% 38%
-        );
-    }
-}
+
+/* CIRCLE */
 @keyframes shapeCircle{
     from{
         border-radius:0;
@@ -2505,6 +2490,7 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
     }
 }
 
+/* RECTANGLE */
 @keyframes shapeRectangle{
     from{
         border-radius:50%;
@@ -2514,6 +2500,7 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
     }
 }
 
+/* HEXAGON */
 @keyframes shapeHexagon{
     from{
         clip-path:none;
@@ -2529,69 +2516,130 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
         );
     }
 }
-      .ldr-wheel {
-        fill: none; stroke: #38bdf8;
-        stroke-width: 4; stroke-linecap: round;
-        stroke-dasharray: 140; stroke-dashoffset: 0;
-        animation: ldrSpin 1.2s linear infinite,
-                   ldrDash 1.6s ease-in-out infinite;
-      }
-      .ldr-wl { transform-origin: 90px 100px; }
-      .ldr-wr { transform-origin: 210px 100px; }
-      .ldr-sgl { transform-origin: 90px 100px;
-                 animation: ldrSpin 1.2s linear infinite; }
-      .ldr-sgr { transform-origin: 210px 100px;
-                 animation: ldrSpin 1.2s linear infinite; }
-      .ldr-spoke {
-        stroke: rgba(56,189,248,0.48);
-        stroke-width: 1.3; stroke-linecap: round;
-      }
-      .ldr-crank {
-        transform-origin: 150px 100px;
-        animation: ldrSpin 1.2s linear infinite;
-      }
-      .ldr-chain {
-        fill: none; stroke: #475569;
-        stroke-width: 2; stroke-dasharray: 4 4;
-        animation: ldrChain 0.6s linear infinite;
-      }
-      .ldr-spr-o {
-        fill:none; stroke:#38bdf8; stroke-width:1.8;
-        opacity:0.5; transform-origin:210px 100px;
-        animation: ldrSpin 1.2s linear infinite;
-      }
-      .ldr-spr-i {
-        fill:none; stroke:#38bdf8; stroke-width:1;
-        opacity:0.22; transform-origin:210px 100px;
-        animation: ldrSpin 1.2s linear infinite;
-      }
-      .ldr-txt {
-        margin-top: 18px; font-size: 13px;
-        letter-spacing: 3px; opacity: 0.8;
-        animation: ldrBlink 1.3s infinite;
-        text-transform: uppercase;
-        color: #e2e8f0;
-        font-family: 'Segoe UI', sans-serif;
-      }
-      @keyframes ldrSpin {
-        from { transform: rotate(0deg); }
-        to   { transform: rotate(360deg); }
-      }
-      @keyframes ldrDash {
-        0%   { stroke-dashoffset:  140; }
-        50%  { stroke-dashoffset:    0; }
-        100% { stroke-dashoffset: -140; }
-      }
-      @keyframes ldrChain {
-        from { stroke-dashoffset: 0;   }
-        to   { stroke-dashoffset: -16; }
-      }
-      @keyframes ldrBlink {
-        0%,100% { opacity: 0.8; }
-        50%     { opacity: 0.2; }
-      }
-    </style>
 
+/* PENTAGON */
+@keyframes shapePentagon{
+    from{
+        clip-path:polygon(
+            25% 5%,
+            75% 5%,
+            100% 50%,
+            75% 95%,
+            25% 95%,
+            0% 50%
+        );
+    }
+    to{
+        clip-path:polygon(
+            50% 0%,
+            100% 38%,
+            82% 100%,
+            18% 100%,
+            0% 38%
+        );
+    }
+}
+
+/* YOUR EXISTING LOADER STYLES */
+.ldr-wheel {
+    fill:none;
+    stroke:#38bdf8;
+    stroke-width:4;
+    stroke-linecap:round;
+    stroke-dasharray:140;
+    stroke-dashoffset:0;
+    animation:ldrSpin 1.2s linear infinite,
+              ldrDash 1.6s ease-in-out infinite;
+}
+
+.ldr-wl{
+    transform-origin:90px 100px;
+}
+
+.ldr-wr{
+    transform-origin:210px 100px;
+}
+
+.ldr-sgl{
+    transform-origin:90px 100px;
+    animation:ldrSpin 1.2s linear infinite;
+}
+
+.ldr-sgr{
+    transform-origin:210px 100px;
+    animation:ldrSpin 1.2s linear infinite;
+}
+
+.ldr-spoke{
+    stroke:rgba(56,189,248,0.48);
+    stroke-width:1.3;
+    stroke-linecap:round;
+}
+
+.ldr-crank{
+    transform-origin:150px 100px;
+    animation:ldrSpin 1.2s linear infinite;
+}
+
+.ldr-chain{
+    fill:none;
+    stroke:#475569;
+    stroke-width:2;
+    stroke-dasharray:4 4;
+    animation:ldrChain 0.6s linear infinite;
+}
+
+.ldr-spr-o{
+    fill:none;
+    stroke:#38bdf8;
+    stroke-width:1.8;
+    opacity:0.5;
+    transform-origin:210px 100px;
+    animation:ldrSpin 1.2s linear infinite;
+}
+
+.ldr-spr-i{
+    fill:none;
+    stroke:#38bdf8;
+    stroke-width:1;
+    opacity:0.22;
+    transform-origin:210px 100px;
+    animation:ldrSpin 1.2s linear infinite;
+}
+
+.ldr-txt{
+    margin-top:18px;
+    font-size:13px;
+    letter-spacing:3px;
+    opacity:0.8;
+    animation:ldrBlink 1.3s infinite;
+    text-transform:uppercase;
+    color:#e2e8f0;
+    font-family:'Segoe UI',sans-serif;
+}
+
+@keyframes ldrSpin{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+
+@keyframes ldrDash{
+    0%{stroke-dashoffset:140;}
+    50%{stroke-dashoffset:0;}
+    100%{stroke-dashoffset:-140;}
+}
+
+@keyframes ldrChain{
+    from{stroke-dashoffset:0;}
+    to{stroke-dashoffset:-16;}
+}
+
+@keyframes ldrBlink{
+    0%,100%{opacity:0.8;}
+    50%{opacity:0.2;}
+}
+
+</style>
     <!-- Ground shadows -->
     <ellipse fill="rgba(0,0,0,0.28)" cx="90"  cy="133" rx="25" ry="4"/>
     <ellipse fill="rgba(0,0,0,0.28)" cx="210" cy="133" rx="25" ry="4"/>
