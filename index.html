@@ -158,7 +158,14 @@ body.cur-h .cur-dot{width:16px;height:16px;} body.cur-h .cur-ring{width:56px;hei
 .fb1{top:-14px;right:-14px;background:linear-gradient(135deg,var(--c-neon),var(--c-neon2));color:#000;box-shadow:0 8px 24px rgba(0,255,229,.4);}
 .fb2{bottom:-4px;left:-20px;background:var(--c-card);border:1px solid var(--c-border2);color:var(--c-txt);animation-delay:-1.5s;}
 @keyframes floatBadge{0%{transform:translateY(0);}100%{transform:translateY(-8px);}}
-
+.fbp-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity 0.3s,visibility 0.3s;padding:1rem;}
+.fbp-overlay.open{opacity:1;visibility:visible;}
+.fbp-overlay.open .fbp-card{transform:translateY(0) scale(1);opacity:1;}
+.fbp-card{background:var(--c-card);border:1px solid var(--c-border2);border-radius:24px;max-width:440px;width:100%;position:relative;overflow:hidden;transform:translateY(30px) scale(0.95);opacity:0;transition:transform 0.35s var(--ease-spring),opacity 0.3s;box-shadow:0 30px 80px rgba(0,0,0,0.6);}
+.fbp-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,0.3);border:1px solid var(--c-border);color:var(--c-txt2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;z-index:2;}
+.fbp-close:hover{background:rgba(255,77,126,0.3);color:#fff;transform:rotate(90deg);}
+.fbp-social-link{display:flex;align-items:center;gap:0.75rem;padding:0.65rem 0.9rem;border-radius:12px;text-decoration:none;transition:all 0.2s;margin-bottom:0.5rem;}
+.fbp-social-link:hover{transform:translateX(4px);}
 /* ═══ SECTION COMMON ═══ */
 .section{padding:6rem 0;position:relative;}
 .section--alt{background:var(--c-bg2);}
@@ -1985,7 +1992,10 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
 @media(max-width:767px){
   .mob-link{font-size:clamp(1.4rem,6vw,2rem);}
 }
-
+@keyframes bfImgPop {
+  from { transform: scale(0.6); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
 /* ═══════════════════════════════════════════════════════════════
    CLINICAL THINKING INDICATORS
    ═══════════════════════════════════════════════════════════════ */
@@ -2428,6 +2438,39 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
 </style>
 </head>
 <body>
+    <div id="bfMemoryZoom" onclick="closeBFMemoryZoom()" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:999999;
+  background:rgba(0,0,0,0.96);
+  backdrop-filter:blur(24px);
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:1rem;
+  cursor:zoom-out;
+">
+  <img id="bfMemoryZoomImg" src="" alt="Memory" style="
+    max-width:94vw;
+    max-height:88vh;
+    object-fit:contain;
+    border-radius:18px;
+    border:2px solid #ff4d7e;
+    box-shadow:0 0 60px rgba(255,77,126,0.5);
+  ">
+  <p style="color:rgba(255,255,255,0.4);font-size:0.72rem;letter-spacing:0.1em;font-family:monospace;margin:0;">
+    Click anywhere or ESC to close
+  </p>
+  <button onclick="event.stopPropagation();closeBFMemoryZoom()" style="
+    position:fixed;top:1rem;right:1rem;
+    width:38px;height:38px;border-radius:50%;
+    background:rgba(255,77,126,0.15);
+    border:1px solid rgba(255,77,126,0.4);
+    color:#ff4d7e;font-size:1rem;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  ">✕</button>
+</div>
 <!-- ═══ LOADING SCREEN ═══ -->
 <div id="loaderScreen" style="
   position: fixed;
@@ -2920,7 +2963,7 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
           <span class="btn-detail-ico">◈</span> Detail About Me
         </button>
       </div>
-      <div class="float-badge fb1">🏆 Available Now</div>
+     <div class="float-badge fb1" onclick="openBadgePopup('bestfriend')" style="cursor:pointer;">💛 BEST FRIEND</div>
       <div class="float-badge fb2">📍 North Shoa, Ethiopia 🇪🇹</div>
     </div>
   </div>
@@ -4756,7 +4799,89 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
     <div id="drugModalContent"></div>
   </div>
 </div>
-
+<div class="fbp-overlay" id="popup-bestfriend" onclick="if(event.target===this)closeBadgePopup('bestfriend')">
+  <div class="fbp-card">
+    <button class="fbp-close" onclick="closeBadgePopup('bestfriend')">✕</button>
+    <div style="background:linear-gradient(135deg,rgba(255,77,126,0.2),rgba(255,179,71,0.1));padding:1.5rem 1.5rem 1rem;">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">
+        <div style="width:65px;height:65px;border-radius:50%;overflow:hidden;border:3px solid #ff4d7e;box-shadow:0 0 20px rgba(255,77,126,0.5);flex-shrink:0;">
+         <img src="images/cdc.jpg" alt="Beletsh" style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease;cursor:zoom-in;" 
+  onmouseover="this.style.transform='scale(1.25)'" 
+  onmouseout="this.style.transform='scale(1)'"
+  onerror="this.src='https://ui-avatars.com/api/?name=B&background=ff4d7e&color=fff&size=120'">
+        </div>
+        <div>
+          <div style="font-family:var(--f-display);font-size:1.4rem;font-weight:800;color:var(--c-txt);">በለጥሽ</div>
+          <div style="font-size:0.72rem;color:#ff7fa8;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-top:3px;">💛 Best Friend Forever</div>
+        </div>
+      </div>
+      <div style="background:rgba(255,77,126,0.1);border-left:3px solid #ff4d7e;border-radius:0 8px 8px 0;padding:0.7rem 1rem;font-size:0.8rem;color:var(--c-txt2);line-height:1.65;font-style:italic;">
+        "በዚያ አስጨናቂ ጊዜ ውስጥ የእሷ ስልክ ከጭንቀት ባህር ውስጥ የሚያወጣ የደኅንነት ገመድ ነበር።"
+      </div>
+    </div>
+    <div style="padding:1.1rem 1.5rem 0.75rem;">
+      <div style="font-family:var(--f-mono);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:#ff7fa8;margin-bottom:0.5rem;">📖 Our Story</div>
+      <p style="font-size:0.82rem;color:var(--c-txt2);line-height:1.75;margin:0;">
+        የሁለተኛ ደረጃ ማጠቃለያ ዓመት እጅግ አስጨናቂ ነበር። መጻሕፍቱ፣ ፈተናው እና ጫናው ሁሉ ከፍ ባሉ ጊዜ —
+        <span style="color:var(--c-txt);font-weight:600;">በለጥሽ</span> ነፍስን የምታረጋጋ ልዩ ሰው ነበረች።
+        ንጹህ ልቧ፣ ገር ድምፇ እና ፍቅሯ የዕለቱን ሁሉ ድካም ወደ ሰላም ይቀይሩ ነበሩ።
+        ተራ ጓደኛ ሳትሆን — <span style="color:#ff4d7e;font-weight:700;">የሰላምና የደስታ መሠረቴ።</span>
+      </p>
+    </div>
+    <div style="padding:0 1.5rem 0.75rem;">
+      <div style="font-family:var(--f-mono);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:#ff7fa8;margin-bottom:0.6rem;">📸 Memories</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;">
+     <div style="aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid var(--c-border);cursor:zoom-in;" onclick="openBFMemoryZoom('images/kk.jpg')">
+  <img src="images/kk.jpg" alt="Memory 1" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.parentElement.style.background='rgba(255,77,126,0.15)'">
+</div>
+<div style="aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid var(--c-border);cursor:zoom-in;" onclick="openBFMemoryZoom('images/mm.png')">
+  <img src="images/mm.png" alt="Memory 2" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.parentElement.style.background='rgba(255,77,126,0.15)'">
+</div>
+<div style="aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid var(--c-border);cursor:zoom-in;" onclick="openBFMemoryZoom('images/nn.jpg')">
+  <img src="images/nn.jpg" alt="Memory 3" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.parentElement.style.background='rgba(255,77,126,0.15)'">
+</div>
+<div style="aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid var(--c-border);cursor:zoom-in;" onclick="openBFMemoryZoom('images/oo.jpg')">
+  <img src="images/oo.jpg" alt="Memory 4" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.parentElement.style.background='rgba(255,77,126,0.15)'">
+</div>
+      </div>
+    </div>
+    <div style="padding:0 1.5rem 1.5rem;">
+      <div style="font-family:var(--f-mono);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:#ff7fa8;margin-bottom:0.75rem;">🌐 Find Her Online</div>
+      <a href="https://t.me/251721903659" target="_blank" rel="noopener" class="fbp-social-link" style="background:rgba(0,136,204,0.1);border:1px solid rgba(0,136,204,0.25);">
+        <span style="font-size:1.3rem;">✈️</span>
+        <div>
+          <div style="font-size:0.65rem;color:rgba(0,136,204,0.9);font-family:var(--f-mono);letter-spacing:0.08em;text-transform:uppercase;">Telegram</div>
+          <div style="font-size:0.85rem;font-weight:700;color:var(--c-txt);">@jobajesking</div>
+        </div>
+        <span style="margin-left:auto;color:var(--c-txt3);font-size:0.8rem;">↗</span>
+      </a>
+      <a href="https://instagram.com/beli86352" target="_blank" rel="noopener" class="fbp-social-link" style="background:rgba(225,48,108,0.08);border:1px solid rgba(225,48,108,0.22);">
+        <span style="font-size:1.3rem;">📸</span>
+        <div>
+          <div style="font-size:0.65rem;color:rgba(225,48,108,0.9);font-family:var(--f-mono);letter-spacing:0.08em;text-transform:uppercase;">Instagram</div>
+          <div style="font-size:0.85rem;font-weight:700;color:var(--c-txt);">beli</div>
+        </div>
+        <span style="margin-left:auto;color:var(--c-txt3);font-size:0.8rem;">↗</span>
+      </a>
+      <a href="https://tiktok.com/@beli77262" target="_blank" rel="noopener" class="fbp-social-link" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);">
+        <span style="font-size:1.3rem;">🎵</span>
+        <div>
+          <div style="font-size:0.65rem;color:rgba(255,255,255,0.5);font-family:var(--f-mono);letter-spacing:0.08em;text-transform:uppercase;">TikTok</div>
+          <div style="font-size:0.85rem;font-weight:700;color:var(--c-txt);">beli❤️👈👉</div>
+        </div>
+        <span style="margin-left:auto;color:var(--c-txt3);font-size:0.8rem;">↗</span>
+      </a>
+      <a href="https://facebook.com" target="_blank" rel="noopener" class="fbp-social-link" style="background:rgba(24,119,242,0.08);border:1px solid rgba(24,119,242,0.22);">
+        <span style="font-size:1.3rem;">👤</span>
+        <div>
+          <div style="font-size:0.65rem;color:rgba(24,119,242,0.9);font-family:var(--f-mono);letter-spacing:0.08em;text-transform:uppercase;">Facebook</div>
+          <div style="font-size:0.85rem;font-weight:700;color:var(--c-txt);">—</div>
+        </div>
+        <span style="margin-left:auto;color:var(--c-txt3);font-size:0.8rem;">↗</span>
+      </a>
+    </div>
+  </div>
+</div>
 <!-- toast -->
 <div id="toast-wrap"></div>
 
@@ -4803,7 +4928,24 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
     }, 2000); // 3500 = 3.5 seconds of loading screen
   });
 'use strict';
-
+function openBadgePopup(id){
+  var el=document.getElementById('popup-'+id);
+  if(!el)return;
+  el.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeBadgePopup(id){
+  var el=document.getElementById('popup-'+id);
+  if(!el)return;
+  el.classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    closeBadgePopup('bestfriend');
+    closeBadgePopup('location');
+  }
+});
 /* ═══ DATA ═══ */
 const DATA = {
   projects: [
@@ -7615,7 +7757,26 @@ document.addEventListener('keydown',function(e){
     });
   })();
 })();
+function openBFMemoryZoom(src) {
+  const overlay = document.getElementById('bfMemoryZoom');
+  const img = document.getElementById('bfMemoryZoomImg');
+  img.src = src;
+  overlay.style.display = 'flex';
+  img.style.animation = 'none';
+  requestAnimationFrame(() => {
+    img.style.animation = 'bfImgPop 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards';
+  });
+  document.body.style.overflow = 'hidden';
+}
 
+function closeBFMemoryZoom() {
+  document.getElementById('bfMemoryZoom').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeBFMemoryZoom();
+});
 </script>
 </body>
 </html>
