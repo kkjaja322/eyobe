@@ -148,6 +148,7 @@ body.cur-h .cur-dot{width:16px;height:16px;} body.cur-h .cur-ring{width:56px;hei
 .prof-name{font-family:var(--f-display);font-size:1.3rem;font-weight:800;margin-bottom:.25rem;}
 .prof-role{font-size:.8rem;color:var(--c-txt2);margin-bottom:1rem;}
 .tags{display:flex;flex-wrap:wrap;gap:.5rem;}
+                   
 .tag{padding:.3rem .75rem;border-radius:20px;font-size:.72rem;font-weight:600;cursor:pointer;transition:all .2s;border:1px solid;}
 .tag-cyan{background:rgba(0,255,229,.1);border-color:rgba(0,255,229,.3);color:var(--c-neon);}
 .tag-purple{background:rgba(123,94,167,.1);border-color:rgba(123,94,167,.3);color:#b89fe0;}
@@ -158,12 +159,74 @@ body.cur-h .cur-dot{width:16px;height:16px;} body.cur-h .cur-ring{width:56px;hei
 .fb1{top:-14px;right:-14px;background:linear-gradient(135deg,var(--c-neon),var(--c-neon2));color:#000;box-shadow:0 8px 24px rgba(0,255,229,.4);}
 .fb2{bottom:-4px;left:-20px;background:var(--c-card);border:1px solid var(--c-border2);color:var(--c-txt);animation-delay:-1.5s;}
 @keyframes floatBadge{0%{transform:translateY(0);}100%{transform:translateY(-8px);}}
-.fbp-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity 0.3s,visibility 0.3s;padding:1rem;}
+.fbp-overlay{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(12px);
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity 0.3s,visibility 0.3s;
+  padding:0;
+}
+@media(min-width:600px){
+  .fbp-overlay{
+    align-items:center;
+    padding:1rem;
+  }
+}
 .fbp-overlay.open{opacity:1;visibility:visible;}
 .fbp-overlay.open .fbp-card{transform:translateY(0) scale(1);opacity:1;}
-.fbp-card{background:var(--c-card);border:1px solid var(--c-border2);border-radius:24px;max-width:440px;width:100%;position:relative;overflow:hidden;transform:translateY(30px) scale(0.95);opacity:0;transition:transform 0.35s var(--ease-spring),opacity 0.3s;box-shadow:0 30px 80px rgba(0,0,0,0.6);}
-.fbp-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,0.3);border:1px solid var(--c-border);color:var(--c-txt2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;z-index:2;}
-.fbp-close:hover{background:rgba(255,77,126,0.3);color:#fff;transform:rotate(90deg);}
+.fbp-card{
+  background:var(--c-card);
+  border:1px solid var(--c-border2);
+  border-radius:24px 24px 0 0;
+  max-width:100%;
+  width:100%;
+  position:relative;
+  overflow:hidden;
+  overflow-y:auto;
+  max-height:92vh;
+  transform:translateY(60px) scale(0.98);
+  opacity:0;
+  transition:transform 0.4s var(--ease-spring),opacity 0.3s;
+  box-shadow:0 -10px 60px rgba(0,0,0,0.5);
+}
+@media(min-width:600px){
+  .fbp-card{
+    border-radius:24px;
+    max-width:440px;
+    max-height:90vh;
+    transform:translateY(30px) scale(0.95);
+    box-shadow:0 30px 80px rgba(0,0,0,0.6);
+  }
+}
+.fbp-close{
+  position:sticky;
+  top:0;
+  left:100%;
+  float:right;
+  margin:12px 12px 0 0;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:rgba(0,0,0,0.4);
+  border:1px solid var(--c-border);
+  color:var(--c-txt2);
+  font-size:15px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all 0.2s;
+  z-index:10;
+  flex-shrink:0;
+}
+.fbp-close:hover{background:rgba(255,77,126,0.3);color:#fff;}
 .fbp-social-link{display:flex;align-items:center;gap:0.75rem;padding:0.65rem 0.9rem;border-radius:12px;text-decoration:none;transition:all 0.2s;margin-bottom:0.5rem;}
 .fbp-social-link:hover{transform:translateX(4px);}
 /* ═══ SECTION COMMON ═══ */
@@ -1863,6 +1926,8 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
   }
   .hero__content{order:1;}
   .float-badge{display:none;}
+    
+    
   .photo-wrap img{max-height:260px;object-fit:cover;}
   /* Slim down profile card padding on tablet */
   .profile-card{padding:1.25rem;}
@@ -2950,7 +3015,7 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
         <div class="prof-name">Eyob Eyoba</div>
         <div class="prof-role">🩺 Anesthesia Student · 💻 Software Architect</div>
         <div class="tags">
-          <span class="tag tag-cyan clickable" onclick="showSkillPop('React','⚛️','Expert React developer with component architecture, custom hooks, concurrent rendering, and production-scale apps.')">React</span>
+          <span class="tag tag-cyan clickable" onclick="openBadgePopup('bestfriend')" style="cursor:pointer; font-size:1.35rem; padding:.55rem 1.1rem;">💛 MY BEST ALL TIME👸</span>
           <span class="tag tag-purple clickable" onclick="showSkillPop('TypeScript','🔷','Advanced TypeScript with generics, utility types, and strict-mode codebases that eliminate runtime errors.')">TypeScript</span>
           <span class="tag tag-pink clickable" onclick="showSkillPop('Node.js','🟢','Server-side JavaScript for REST APIs, real-time WebSocket servers, CLI tooling, and microservice backends.')">Node.js</span>
           <span class="tag tag-gold clickable" onclick="showSkillPop('UI/UX Design','🎨','Advanced design thinking, Figma, design token systems, accessibility WCAG 2.2 AA, and bridging design to code.')">UI/UX</span>
@@ -2962,6 +3027,7 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
           <span class="btn-detail-shine"></span>
           <span class="btn-detail-ico">◈</span> Detail About Me
         </button>
+            
       </div>
      <div class="float-badge fb1" onclick="openBadgePopup('bestfriend')" style="cursor:pointer;">💛 BEST FRIEND</div>
       <div class="float-badge fb2">📍 North Shoa, Ethiopia 🇪🇹</div>
@@ -4812,11 +4878,11 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
         </div>
         <div>
           <div style="font-family:var(--f-display);font-size:1.4rem;font-weight:800;color:var(--c-txt);">በለጥሽ</div>
-          <div style="font-size:0.72rem;color:#ff7fa8;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-top:3px;">💛 Best Friend Forever</div>
+          <div style="font-size:0.72rem;color:#ff7fa8;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-top:3px;">💛 my queen and my life</div>
         </div>
       </div>
       <div style="background:rgba(255,77,126,0.1);border-left:3px solid #ff4d7e;border-radius:0 8px 8px 0;padding:0.7rem 1rem;font-size:0.8rem;color:var(--c-txt2);line-height:1.65;font-style:italic;">
-        "በዚያ አስጨናቂ ጊዜ ውስጥ የእሷ ስልክ ከጭንቀት ባህር ውስጥ የሚያወጣ የደኅንነት ገመድ ነበር።"
+        "አምላኬ አንተ ያልከው ይሁን 🙏🙏🙏🙏"
       </div>
     </div>
     <div style="padding:1.1rem 1.5rem 0.75rem;">
@@ -4840,8 +4906,8 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
 <div style="aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid var(--c-border);cursor:zoom-in;" onclick="openBFMemoryZoom('images/nn.jpg')">
   <img src="images/nn.jpg" alt="Memory 3" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.parentElement.style.background='rgba(255,77,126,0.15)'">
 </div>
-<div style="aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid var(--c-border);cursor:zoom-in;" onclick="openBFMemoryZoom('images/oo.png')">
-  <img src="images/oo.png" alt="Memory 4" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.parentElement.style.background='rgba(255,77,126,0.15)'">
+<div style="aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid var(--c-border);cursor:zoom-in;" onclick="openBFMemoryZoom('images/oo.jpg')">
+  <img src="images/oo.jpg" alt="Memory 4" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.parentElement.style.background='rgba(255,77,126,0.15)'">
 </div>
       </div>
     </div>
