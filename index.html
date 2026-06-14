@@ -1714,80 +1714,28 @@ body.cur-h .cur-dot{width:16px;height:16px;} body.cur-h .cur-ring{width:56px;hei
 .dev-tool__desc { font-size: .68rem; color: var(--c-txt3); }
 
 /* music player */
-.music-player {
-  position: fixed;
-  bottom: 5.5rem;
-  left: 1.5rem;
-  z-index: 200;
+.music-radial-btn {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 40px; height: 40px;
+  border-radius: 50%;
   background: var(--c-card);
   border: 1px solid var(--c-border2);
-  border-radius: 16px;
-  padding: .85rem 1.1rem;
-  box-shadow: 0 8px 32px rgba(0,0,0,.5);
+  color: var(--c-txt);
+  font-size: 15px;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: .75rem;
-  transform: translateY(150%);
+  justify-content: center;
   opacity: 0;
-  transition: transform .4s var(--ease-spring), opacity .3s;
-  max-width: 240px;
+  pointer-events: none;
+  transition: opacity .2s, transform .3s cubic-bezier(0.34,1.56,0.64,1);
+  z-index: 1;
 }
-.music-player.show { transform: translateY(0); opacity: 1; }
-.music-player__icon { font-size: 1.1rem; }
-.music-player__info { flex: 1; min-width: 0; }
-.music-player__title { font-size: .75rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.music-player__sub { font-size: .62rem; color: var(--c-txt3); }
-.music-player__controls { display: flex; gap: .35rem; }
-.music-ctrl-btn { background: none; border: none; cursor: pointer; font-size: 1rem; color: var(--c-txt2); transition: color .2s; padding: 2px; }
-.music-ctrl-btn:hover { color: var(--c-neon); }
-.music-ctrl-btn.playing{color:var(--c-neon);}
-.music-close-btn{
-  width:26px;height:26px;border-radius:50%;
-  background:rgba(255,77,126,.15);
-  border:1px solid rgba(255,77,126,.4);
-  color:#ff7fa8;font-size:13px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:all .2s;flex-shrink:0;
+.music-radial-btn:hover {
+  background: var(--c-glass2);
 }
-.music-close-btn:hover{background:rgba(255,77,126,.35);color:#fff;}
-.music-toggle-btn {
-  position: fixed; bottom: 5.5rem; left: 1.5rem;
-  width: 42px; height: 42px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--c-neon2), var(--c-neon3));
-  border: none; color: #fff; font-size: 16px; cursor: pointer;
-  box-shadow: 0 4px 16px rgba(123,94,167,.4);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 200; transition: all .3s var(--ease-spring);
-}
-.music-toggle-btn:hover { transform: scale(1.1); }
-.music-menu {
-  position: fixed; bottom: 5.5rem; left: 1.5rem; z-index: 201;
-  background: var(--c-card); border: 1px solid var(--c-border2);
-  border-radius: 16px; padding: .75rem; width: 240px;
-  box-shadow: 0 8px 32px rgba(0,0,0,.5);
-  backdrop-filter: blur(20px);
-  transform: translateY(20px) scale(.95); opacity: 0; pointer-events: none;
-  transition: transform .35s var(--ease-spring), opacity .25s;
-}
-.music-menu.show { transform: translateY(0) scale(1); opacity: 1; pointer-events: all; }
-.music-menu__label { font-size: .68rem; font-weight: 700; color: var(--c-neon); letter-spacing: .08em; text-transform: uppercase; padding: .25rem .5rem .6rem; }
-.music-menu__item {
-  display: flex; align-items: center; gap: .65rem; width: 100%;
-  background: var(--c-glass); border: 1px solid transparent; border-radius: 10px;
-  padding: .6rem .75rem; cursor: pointer; transition: all .2s; margin-bottom: .35rem;
-  color: var(--c-txt);
-}
-.music-menu__item:last-child { margin-bottom: 0; }
-.music-menu__item:hover { background: var(--c-glass2); border-color: var(--c-border2); }
-.music-menu__item.active { border-color: var(--c-neon); background: rgba(0,255,229,.07); }
-.music-menu__num { font-family: var(--f-mono); font-size: .7rem; color: var(--c-neon); min-width: 16px; }
-.music-menu__info { flex: 1; text-align: left; }
-.music-menu__title { font-size: .78rem; font-weight: 600; }
-.music-menu__artist { font-size: .65rem; color: var(--c-txt3); margin-top: 2px; }
-.music-menu__play { font-size: .75rem; color: var(--c-txt3); transition: color .2s; }
-.music-menu__item:hover .music-menu__play,
-.music-menu__item.active .music-menu__play { color: var(--c-neon); }
-
 /* study mode overlay */
 .study-mode-toggle {
   position: fixed; bottom: 9.5rem; left: 1.5rem;
@@ -4992,54 +4940,34 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
 
 <!-- music toggle -->
 
+<!-- RADIAL MUSIC BUTTON -->
+<div id="music-root" style="position:fixed;bottom:1.5rem;left:1.5rem;z-index:200;width:52px;height:52px;">
 
-<!-- music toggle -->
-<button class="music-toggle-btn" id="musicToggle" title="Mezmur" onclick="toggleMusicMenu()">🎵</button>
+  <button id="music-prev" class="music-radial-btn">
+    ⏮
+  </button>
 
-<!-- song chooser menu -->
-<div class="music-menu" id="musicMenu">
-  <div class="music-menu__label">🎶 Choose a Mezmur</div>
-  <button class="music-menu__item" onclick="selectTrack(0)">
-    <span class="music-menu__num">1</span>
-    <div class="music-menu__info">
-      <div class="music-menu__title">Min Bitwedegn New</div>
-      <div class="music-menu__artist">Abel Birhanu</div>
-    </div>
-    <span class="music-menu__play">▶</span>
+  <button id="music-pp" class="music-radial-btn">
+    <span id="music-pp-icon">▶</span>
   </button>
-  <button class="music-menu__item" onclick="selectTrack(1)">
-    <span class="music-menu__num">2</span>
-    <div class="music-menu__info">
-      <div class="music-menu__title">Eyesus Lbel Eyesus</div>
-      <div class="music-menu__artist">Tewodros Yoseph</div>
-    </div>
-    <span class="music-menu__play">▶</span>
+
+  <button id="music-next" class="music-radial-btn">
+    ⏭
   </button>
-  <button class="music-menu__item" onclick="selectTrack(2)">
-    <span class="music-menu__num">3</span>
-    <div class="music-menu__info">
-      <div class="music-menu__title">Le Tsehat</div>
-      <div class="music-menu__artist">Gebre Yohannes</div>
-    </div>
-    <span class="music-menu__play">▶</span>
+
+  <button id="music-main" style="
+    position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    width:52px;height:52px;border-radius:50%;
+    background:linear-gradient(135deg,var(--c-neon2),var(--c-neon3));
+    border:none;font-size:20px;cursor:pointer;z-index:2;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 16px rgba(123,94,167,.4);
+    transition:transform .3s;">
+    🎵
   </button>
+
 </div>
-
-<!-- now playing bar -->
-<div class="music-player" id="musicPlayer">
-  <span class="music-player__icon">🎵</span>
-  <div class="music-player__info">
-    <div class="music-player__title" id="musicTitle">—</div>
-    <div class="music-player__sub" id="musicSub">Select a mezmur</div>
-  </div>
- <div class="music-player__controls">
-    <button class="music-ctrl-btn" onclick="prevTrack()" title="Previous">⏮</button>
-    <button class="music-ctrl-btn" id="playPauseBtn" onclick="togglePlay()" title="Play/Pause">▶</button>
-    <button class="music-ctrl-btn" onclick="nextTrack()" title="Next">⏭</button>
-  </div>
-  <button class="music-close-btn" onclick="closeMusicPlayer()" title="Close player">✕</button>
-</div>
-
 <!-- study mode toggle -->
 <button class="study-mode-toggle" id="studyModeBtn" title="Toggle Study Mode" onclick="toggleStudyMode()">📚</button>
 
@@ -7613,66 +7541,104 @@ document.addEventListener('keydown',e=>{
 });
 
 /* ═══ MUSIC PLAYER ═══ */
-const TRACKS=[
-  {title:'Min Bitwedegn New',sub:'Abel Birhanu',src:'abel.mp3'},
-  {title:'Eyesus Lbel Eyesus',sub:'Tewodros Yoseph',src:'tewodros.mp3'},
-  {title:'Le Tsehat',sub:'Gebre Yohannes',src:'gebre.mp3'},
-];
-let trackIdx=0,isPlaying=false,menuVisible=false,playerVisible=false;
-const _audio=new Audio();
-_audio.addEventListener('ended',()=>{trackIdx=(trackIdx+1)%TRACKS.length;loadTrack(trackIdx);_audio.play();isPlaying=true;syncUI();});
+/* ═══ RADIAL MUSIC PLAYER ═══ */
+(function(){
+  const RADIUS = 72;
+  const TRACKS = [
+    {title:'Min Bitwedegn New',  artist:'Abel Birhanu',    src:'abel.mp3'},
+    {title:'Eyesus Lbel Eyesus', artist:'Tewodros Yoseph', src:'tewodros.mp3'},
+    {title:'Le Tsehat',          artist:'Gebre Yohannes',  src:'gebre.mp3'},
+  ];
 
-function toggleMusicMenu(){
-  menuVisible=!menuVisible;
-  document.getElementById('musicMenu').classList.toggle('show',menuVisible);
-}
-function selectTrack(idx){
-  trackIdx=idx;
-  loadTrack(idx);
-  _audio.play();
-  isPlaying=true;
-  playerVisible=true;
-  menuVisible=false;
-  document.getElementById('musicMenu').classList.remove('show');
-  document.getElementById('musicPlayer').classList.add('show');
-  syncUI();
-  showToast('♪ Now Playing: '+TRACKS[idx].title+' — '+TRACKS[idx].sub,'i',2500);
-}
-function loadTrack(idx){
-  _audio.src=TRACKS[idx].src;
-  document.getElementById('musicTitle').textContent=TRACKS[idx].title;
-  document.getElementById('musicSub').textContent=TRACKS[idx].sub;
-  document.querySelectorAll('.music-menu__item').forEach((el,i)=>el.classList.toggle('active',i===idx));
-}
-function togglePlay(){
-  if(!playerVisible) return;
-  if(_audio.paused){_audio.play();isPlaying=true;}
-  else{_audio.pause();isPlaying=false;}
-  syncUI();
-  showToast(isPlaying?'▶ Playing: '+TRACKS[trackIdx].title:'⏸ Paused','i',2000);
-}
-function nextTrack(){trackIdx=(trackIdx+1)%TRACKS.length;loadTrack(trackIdx);if(isPlaying)_audio.play();}
-function prevTrack(){trackIdx=(trackIdx-1+TRACKS.length)%TRACKS.length;loadTrack(trackIdx);if(isPlaying)_audio.play();}
-function syncUI(){
-  const btn=document.getElementById('playPauseBtn');
-  if(btn){btn.textContent=isPlaying?'⏸':'▶';btn.classList.toggle('playing',isPlaying);}
-}
+  /* angles fan to the LEFT so buttons don't go off screen */
+  const CONFIG = [
+    {id:'music-prev', angle:-130, label:'⏮'},
+    {id:'music-pp',   angle: 180, label:'▶'},
+    {id:'music-next', angle: 130, label:'⏭'},
+  ];
 
-/* ═══ STUDY MODE ═══ */
-function closeMusicPlayer(){
-  _audio.pause();
-  isPlaying=false;
-  syncUI();
-  playerVisible=false;
-  document.getElementById('musicPlayer').classList.remove('show');
-}
-document.addEventListener('click',function(e){
-  if(!e.target.closest('#musicMenu')&&!e.target.closest('.music-toggle-btn')){
-    menuVisible=false;
-    var menu=document.getElementById('musicMenu');
-    if(menu) menu.classList.remove('show');
+  const audio   = new Audio();
+  let open      = false;
+  let playing   = false;
+  let trackIdx  = 0;
+
+  const mainBtn = document.getElementById('music-main');
+  const ppIcon  = document.getElementById('music-pp-icon');
+
+  function toRad(deg){ return deg * Math.PI / 180; }
+
+  function loadTrack(){
+    audio.src = TRACKS[trackIdx].src;
+    showToast('♪ ' + TRACKS[trackIdx].title + ' — ' + TRACKS[trackIdx].artist, 'i', 2500);
   }
-});
+
+  function openMenu(){
+    open = true;
+    mainBtn.style.transform = 'translate(-50%,-50%) scale(1.12)';
+    CONFIG.forEach(cfg => {
+      const btn = document.getElementById(cfg.id);
+      const tx  = Math.round(Math.cos(toRad(cfg.angle)) * RADIUS);
+      const ty  = Math.round(Math.sin(toRad(cfg.angle)) * RADIUS);
+      btn.style.transform    = `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px))`;
+      btn.style.opacity      = '1';
+      btn.style.pointerEvents = 'auto';
+    });
+  }
+
+  function closeMenu(){
+    open = false;
+    mainBtn.style.transform = 'translate(-50%,-50%) scale(1)';
+    CONFIG.forEach(cfg => {
+      const btn = document.getElementById(cfg.id);
+      btn.style.transform    = 'translate(-50%,-50%)';
+      btn.style.opacity      = '0';
+      btn.style.pointerEvents = 'none';
+    });
+  }
+
+  /* main button — toggle open/close */
+  mainBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    open ? closeMenu() : openMenu();
+  });
+
+  /* ⏮ previous */
+  document.getElementById('music-prev').addEventListener('click', e => {
+    e.stopPropagation();
+    trackIdx = (trackIdx - 1 + TRACKS.length) % TRACKS.length;
+    loadTrack();
+    if(playing) audio.play();
+  });
+
+  /* ▶/⏸ play-pause */
+  document.getElementById('music-pp').addEventListener('click', e => {
+    e.stopPropagation();
+    if(!audio.src) loadTrack();
+    playing = !playing;
+    playing ? audio.play() : audio.pause();
+    ppIcon.textContent = playing ? '⏸' : '▶';
+  });
+
+  /* ⏭ next */
+  document.getElementById('music-next').addEventListener('click', e => {
+    e.stopPropagation();
+    trackIdx = (trackIdx + 1) % TRACKS.length;
+    loadTrack();
+    if(playing) audio.play();
+  });
+
+  /* auto-advance */
+  audio.addEventListener('ended', () => {
+    trackIdx = (trackIdx + 1) % TRACKS.length;
+    loadTrack();
+    audio.play();
+  });
+
+  /* click outside → close */
+  document.addEventListener('click', () => {
+    if(open) closeMenu();
+  });
+})();
 function toggleStudyMode(){
   document.body.classList.toggle('study-mode');
   const on=document.body.classList.contains('study-mode');
