@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
-<head>
+<head> 
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content="Eyob Eyoba — Anesthesia Professional & Software Architect"/>
@@ -8080,35 +8080,15 @@ Date: ${new Date().toLocaleString()}
 
   /* open real Gmail compose */
 /* send to your server */
-  fetch('https://eyobe.lovestoblog.com/feedback.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      rating, name, email, role, source,
-      recommend, favourites: favs,
-      suggestion, additional: extra,
-      page: window.location.href,
-      date: new Date().toLocaleString()
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if(data.success){
-      document.getElementById('ratingForm').style.display    = 'none';
-      document.getElementById('ratingSuccess').style.display = 'block';
-    } else {
-      showToast('❌ Something went wrong. Please try again.','e',4000);
-      btn.disabled = false;
-      document.getElementById('ratingBtnTxt').textContent = '✦ Send Feedback to Eyob';
-      document.getElementById('ratingSpinner').style.display = 'none';
-    }
-  })
-  .catch(() => {
-    showToast('❌ Network error. Check your connection.','e',4000);
-    btn.disabled = false;
-    document.getElementById('ratingBtnTxt').textContent = '✦ Send Feedback to Eyob';
-    document.getElementById('ratingSpinner').style.display = 'none';
-  });
+ /* open real Gmail compose */
+  const gmailURL = `https://mail.google.com/mail/?view=cm&fs=1&to=eyoba%40gmail.com&su=${subject}&body=${body}`;
+  window.open(gmailURL, '_blank');
+
+  /* show success after short delay */
+  setTimeout(() => {
+    document.getElementById('ratingForm').style.display   = 'none';
+    document.getElementById('ratingSuccess').style.display = 'block';
+  }, 1200);
 /* ═══ DRUG FILTER BAR BUTTONS (re-init for correct scoping) ═══ */
 document.querySelectorAll('#drugFilterBar .fbtn').forEach(btn=>{
   btn.addEventListener('click',()=>{
