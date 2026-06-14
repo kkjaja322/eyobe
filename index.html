@@ -8077,10 +8077,14 @@ Date: ${new Date().toLocaleString()}
   document.getElementById('ratingSpinner').style.display = 'block';
   btn.disabled = true;
 
-  /* open real Gmail compose */
-  const gmailURL = `https://mail.google.com/mail/?view=cm&fs=1&to=eyoba%40gmail.com&su=${subject}&body=${body}`;
-  window.open(gmailURL, '_blank');
-
+fetch('https://formspree.io/f/YOUR_FORM_ID', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ name, email, rating, suggestion, role, source, favs, recommend, extra })
+}).then(() => {
+  document.getElementById('ratingForm').style.display = 'none';
+  document.getElementById('ratingSuccess').style.display = 'block';
+});
   /* show success after short delay */
   setTimeout(() => {
     document.getElementById('ratingForm').style.display   = 'none';
