@@ -1787,7 +1787,49 @@ body.cur-h .cur-dot{width:16px;height:16px;} body.cur-h .cur-ring{width:56px;hei
 .music-menu__play { font-size: .75rem; color: var(--c-txt3); transition: color .2s; }
 .music-menu__item:hover .music-menu__play,
 .music-menu__item.active .music-menu__play { color: var(--c-neon); }
-
+/* ═══ RATING MODAL ═══ */
+@keyframes ratingPop {
+  from { opacity:0; transform:translateY(30px) scale(.96); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+.rate-star {
+  font-size: 2.4rem;
+  color: var(--c-border2);
+  cursor: pointer;
+  transition: color .15s, transform .15s;
+  user-select: none;
+  line-height: 1;
+}
+.rate-star:hover,
+.rate-star.active {
+  color: var(--c-gold);
+  transform: scale(1.2);
+}
+.fav-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .35rem .8rem;
+  border-radius: 20px;
+  border: 1px solid var(--c-border);
+  background: var(--c-glass);
+  font-size: .78rem;
+  cursor: pointer;
+  transition: all .2s;
+  color: var(--c-txt2);
+}
+.fav-chip:hover {
+  border-color: var(--c-border2);
+  background: var(--c-glass2);
+}
+.fav-chip input[type="checkbox"] {
+  display: none;
+}
+.fav-chip.checked {
+  background: rgba(0,255,229,.12);
+  border-color: var(--c-neon);
+  color: var(--c-neon);
+}
 /* study mode overlay */
 .study-mode-toggle {
   position: fixed; bottom: 9.5rem; left: 1.5rem;
@@ -4985,6 +5027,258 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
   </div>
 </div>
 <!-- toast -->
+<!-- RATING MODAL -->
+<div id="ratingModalOverlay" onclick="if(event.target===this)closeRatingModal()" style="
+  display:none;position:fixed;inset:0;z-index:9999;
+  background:rgba(0,0,0,0.75);backdrop-filter:blur(14px);
+  align-items:center;justify-content:center;padding:1rem;">
+
+  <div style="
+    background:var(--c-bg3);border:1px solid var(--c-border2);
+    border-radius:24px;width:100%;max-width:540px;
+    max-height:92vh;overflow-y:auto;position:relative;
+    box-shadow:0 32px 80px rgba(0,0,0,0.6);
+    animation:ratingPop .4s cubic-bezier(0.34,1.56,0.64,1) both;">
+
+    <!-- close button -->
+    <button onclick="closeRatingModal()" style="
+      position:sticky;top:1rem;float:right;margin:1rem 1rem 0 0;
+      width:36px;height:36px;border-radius:50%;
+      background:rgba(255,255,255,0.07);border:1px solid var(--c-border);
+      color:var(--c-txt2);font-size:18px;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      transition:all .2s;z-index:10;flex-shrink:0;">✕</button>
+
+    <div style="padding:2rem 2rem 0;clear:both;">
+
+      <!-- header -->
+      <div style="text-align:center;margin-bottom:1.75rem;">
+        <div style="font-size:2.5rem;margin-bottom:.5rem;">⭐</div>
+        <h2 style="font-family:var(--f-display);font-size:1.6rem;font-weight:800;margin-bottom:.4rem;">
+          Rate & Share Your Thoughts
+        </h2>
+        <p style="font-size:.85rem;color:var(--c-txt2);line-height:1.6;">
+          Your feedback helps Eyob grow as both an Anesthesia professional and a Software Architect.
+          All responses go directly to his email.
+        </p>
+      </div>
+
+      <form id="ratingForm" onsubmit="submitRating(event)" novalidate>
+
+        <!-- star rating -->
+        <div style="margin-bottom:1.5rem;">
+          <label style="font-size:.8rem;font-weight:600;color:var(--c-txt2);
+            letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:.75rem;">
+            Overall Rating <span style="color:var(--c-neon3)">*</span>
+          </label>
+          <div id="starRow" style="display:flex;gap:.5rem;justify-content:center;">
+            <span class="rate-star" data-val="1" onclick="setRating(1)" title="Poor">★</span>
+            <span class="rate-star" data-val="2" onclick="setRating(2)" title="Fair">★</span>
+            <span class="rate-star" data-val="3" onclick="setRating(3)" title="Good">★</span>
+            <span class="rate-star" data-val="4" onclick="setRating(4)" title="Very Good">★</span>
+            <span class="rate-star" data-val="5" onclick="setRating(5)" title="Excellent">★</span>
+          </div>
+          <div id="starLabel" style="text-align:center;font-size:.8rem;
+            color:var(--c-neon);font-family:var(--f-mono);margin-top:.5rem;
+            min-height:18px;letter-spacing:.06em;"></div>
+          <input type="hidden" id="ratingVal" value="0">
+        </div>
+
+        <!-- full name -->
+        <div style="margin-bottom:1.1rem;">
+          <label for="r-name" style="font-size:.8rem;font-weight:600;color:var(--c-txt2);
+            letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:.4rem;">
+            Full Name <span style="color:var(--c-neon3)">*</span>
+          </label>
+          <input id="r-name" type="text" placeholder="e.g. Abebe Kebede" autocomplete="name"
+            style="width:100%;padding:.75rem 1rem;border-radius:10px;
+            background:var(--c-glass);border:1px solid var(--c-border);
+            color:var(--c-txt);font-size:.875rem;outline:none;
+            transition:border-color .2s;font-family:var(--f-body);"
+            onfocus="this.style.borderColor='var(--c-neon)'"
+            onblur="this.style.borderColor='var(--c-border)'" required>
+          <div id="r-name-err" style="display:none;font-size:.72rem;color:var(--c-neon3);margin-top:.3rem;">
+            ⚠ Please enter your full name
+          </div>
+        </div>
+
+        <!-- email (real google mailto) -->
+        <div style="margin-bottom:1.1rem;">
+          <label for="r-email" style="font-size:.8rem;font-weight:600;color:var(--c-txt2);
+            letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:.4rem;">
+            Your Email <span style="color:var(--c-neon3)">*</span>
+          </label>
+          <input id="r-email" type="email" placeholder="yourname@gmail.com" autocomplete="email"
+            style="width:100%;padding:.75rem 1rem;border-radius:10px;
+            background:var(--c-glass);border:1px solid var(--c-border);
+            color:var(--c-txt);font-size:.875rem;outline:none;
+            transition:border-color .2s;font-family:var(--f-body);"
+            onfocus="this.style.borderColor='var(--c-neon)'"
+            onblur="this.style.borderColor='var(--c-border)'" required>
+          <div id="r-email-err" style="display:none;font-size:.72rem;color:var(--c-neon3);margin-top:.3rem;">
+            ⚠ Please enter a valid email address
+          </div>
+        </div>
+
+        <!-- profession -->
+        <div style="margin-bottom:1.1rem;">
+          <label for="r-role" style="font-size:.8rem;font-weight:600;color:var(--c-txt2);
+            letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:.4rem;">
+            Your Profession / Role
+          </label>
+          <select id="r-role" style="width:100%;padding:.75rem 1rem;border-radius:10px;
+            background:var(--c-glass);border:1px solid var(--c-border);
+            color:var(--c-txt);font-size:.875rem;outline:none;font-family:var(--f-body);">
+            <option value="">Select your role…</option>
+            <option>Medical Professional / Doctor</option>
+            <option>Nurse / Allied Health Worker</option>
+            <option>Anesthesia Student / Resident</option>
+            <option>Software Developer / Engineer</option>
+            <option>UI/UX Designer</option>
+            <option>Recruiter / HR Professional</option>
+            <option>Student</option>
+            <option>Entrepreneur / Business Owner</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <!-- how did you find -->
+        <div style="margin-bottom:1.1rem;">
+          <label for="r-source" style="font-size:.8rem;font-weight:600;color:var(--c-txt2);
+            letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:.4rem;">
+            How Did You Find This Portfolio?
+          </label>
+          <select id="r-source" style="width:100%;padding:.75rem 1rem;border-radius:10px;
+            background:var(--c-glass);border:1px solid var(--c-border);
+            color:var(--c-txt);font-size:.875rem;outline:none;font-family:var(--f-body);">
+            <option value="">Select source…</option>
+            <option>Telegram</option>
+            <option>Instagram</option>
+            <option>TikTok</option>
+            <option>WhatsApp</option>
+            <option>Facebook</option>
+            <option>LinkedIn</option>
+            <option>Google Search</option>
+            <option>Shared by a Friend</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <!-- favourite section -->
+        <div style="margin-bottom:1.1rem;">
+          <label style="font-size:.8rem;font-weight:600;color:var(--c-txt2);
+            letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:.6rem;">
+            Favourite Section (choose all that apply)
+          </label>
+          <div style="display:flex;flex-wrap:wrap;gap:.5rem;" id="favSections">
+            <label class="fav-chip"><input type="checkbox" value="Anesthesia Hub"> 🩺 Anesthesia Hub</label>
+            <label class="fav-chip"><input type="checkbox" value="Web Dev"> 💻 Web Dev</label>
+            <label class="fav-chip"><input type="checkbox" value="Projects"> 💼 Projects</label>
+            <label class="fav-chip"><input type="checkbox" value="Gallery"> 📸 Gallery</label>
+            <label class="fav-chip"><input type="checkbox" value="Memories"> 💫 Memories</label>
+            <label class="fav-chip"><input type="checkbox" value="Drug Calculator"> 🧮 Drug Calc</label>
+            <label class="fav-chip"><input type="checkbox" value="Quiz"> 🧠 Quiz</label>
+            <label class="fav-chip"><input type="checkbox" value="Code Playground"> 🧑‍💻 Playground</label>
+          </div>
+        </div>
+
+        <!-- main suggestion -->
+        <div style="margin-bottom:1.1rem;">
+          <label for="r-suggestion" style="font-size:.8rem;font-weight:600;color:var(--c-txt2);
+            letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:.4rem;">
+            Your Suggestion <span style="color:var(--c-neon3)">*</span>
+          </label>
+          <textarea id="r-suggestion" rows="4" placeholder="What would make this portfolio even better? What impressed you? What should Eyob improve?" required
+            style="width:100%;padding:.75rem 1rem;border-radius:10px;
+            background:var(--c-glass);border:1px solid var(--c-border);
+            color:var(--c-txt);font-size:.875rem;outline:none;resize:vertical;
+            transition:border-color .2s;font-family:var(--f-body);min-height:100px;"
+            onfocus="this.style.borderColor='var(--c-neon)'"
+            onblur="this.style.borderColor='var(--c-border)'"></textarea>
+          <div id="r-sug-err" style="display:none;font-size:.72rem;color:var(--c-neon3);margin-top:.3rem;">
+            ⚠ Please write at least 20 characters
+          </div>
+        </div>
+
+        <!-- would recommend -->
+        <div style="margin-bottom:1.1rem;">
+          <label style="font-size:.8rem;font-weight:600;color:var(--c-txt2);
+            letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:.6rem;">
+            Would You Recommend Eyob?
+          </label>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+            <label style="display:flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.85rem;">
+              <input type="radio" name="recommend" value="Yes, definitely!"> Yes, definitely!
+            </label>
+            <label style="display:flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.85rem;">
+              <input type="radio" name="recommend" value="Maybe"> Maybe
+            </label>
+            <label style="display:flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.85rem;">
+              <input type="radio" name="recommend" value="Not yet"> Not yet
+            </label>
+          </div>
+        </div>
+
+        <!-- additional comments -->
+        <div style="margin-bottom:1.5rem;">
+          <label for="r-extra" style="font-size:.8rem;font-weight:600;color:var(--c-txt2);
+            letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:.4rem;">
+            Additional Comments (optional)
+          </label>
+          <textarea id="r-extra" rows="3" placeholder="Anything else you'd like Eyob to know — job opportunity, collaboration, personal message…"
+            style="width:100%;padding:.75rem 1rem;border-radius:10px;
+            background:var(--c-glass);border:1px solid var(--c-border);
+            color:var(--c-txt);font-size:.875rem;outline:none;resize:vertical;
+            transition:border-color .2s;font-family:var(--f-body);min-height:80px;"
+            onfocus="this.style.borderColor='var(--c-neon2)'"
+            onblur="this.style.borderColor='var(--c-border)'"></textarea>
+        </div>
+
+        <!-- submit button -->
+        <button type="submit" id="ratingSubmitBtn" style="
+          width:100%;padding:1rem;border-radius:12px;
+          background:linear-gradient(135deg,var(--c-neon),var(--c-neon2));
+          color:#000;font-weight:700;font-size:.95rem;
+          border:none;cursor:pointer;
+          display:flex;align-items:center;justify-content:center;gap:.5rem;
+          transition:all .2s;margin-bottom:.75rem;">
+          <span id="ratingBtnTxt">✦ Send Feedback to Eyob</span>
+          <span id="ratingSpinner" style="display:none;width:18px;height:18px;
+            border:2px solid rgba(0,0,0,.3);border-top-color:#000;
+            border-radius:50%;animation:spin .7s linear infinite;"></span>
+        </button>
+
+        <p style="text-align:center;font-size:.72rem;color:var(--c-txt3);margin-bottom:1.5rem;">
+          🔒 Your feedback is sent directly to
+          <a href="mailto:eyoba@gmail.com" style="color:var(--c-neon);">eyoba@gmail.com</a>
+          via Gmail. We never share your data.
+        </p>
+
+      </form>
+
+      <!-- success state -->
+      <div id="ratingSuccess" style="display:none;text-align:center;padding:2rem 1rem 2.5rem;">
+        <div style="font-size:3rem;margin-bottom:1rem;">🎉</div>
+        <div style="font-family:var(--f-display);font-size:1.4rem;font-weight:800;margin-bottom:.5rem;">
+          Thank You So Much!
+        </div>
+        <p style="font-size:.88rem;color:var(--c-txt2);line-height:1.7;margin-bottom:1.5rem;">
+          Your feedback has been sent to Eyob's Gmail. He reads every single message personally
+          and will get back to you within 24–48 hours. 🙏
+        </p>
+        <button onclick="closeRatingModal()" style="
+          padding:.75rem 2rem;border-radius:30px;
+          background:linear-gradient(135deg,var(--c-neon2),var(--c-neon3));
+          color:#fff;font-weight:700;border:none;cursor:pointer;">
+          Close ✕
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- toast -->
 <div id="toast-wrap"></div>
 
 <!-- back to top -->
@@ -5041,7 +5335,8 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
 </div>
 
 <!-- study mode toggle -->
-<button class="study-mode-toggle" id="studyModeBtn" title="Toggle Study Mode" onclick="toggleStudyMode()">📚</button>
+<!-- study mode toggle -->
+<button class="study-mode-toggle" id="studyModeBtn" title="Rate & Suggest" onclick="openRatingModal()">📚</button>
 
 <!-- ═══════════════════════════════════════════
      JAVASCRIPT — ORIGINAL + NEW ADDITIONS
@@ -7673,11 +7968,125 @@ document.addEventListener('click',function(e){
     if(menu) menu.classList.remove('show');
   }
 });
-function toggleStudyMode(){
-  document.body.classList.toggle('study-mode');
-  const on=document.body.classList.contains('study-mode');
-  showToast(on?'📚 Study Mode ON — minimize distractions!':'Study Mode OFF','i',3000);
-  document.getElementById('studyModeBtn').title=on?'Disable Study Mode':'Enable Study Mode';
+/* ═══ RATING MODAL ═══ */
+let currentRating = 0;
+
+function openRatingModal(){
+  const overlay = document.getElementById('ratingModalOverlay');
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  currentRating = 0;
+  updateStars(0);
+  document.getElementById('ratingVal').value = '0';
+  document.getElementById('ratingForm').style.display = 'block';
+  document.getElementById('ratingSuccess').style.display = 'none';
+  document.getElementById('ratingSubmitBtn').disabled = false;
+  document.getElementById('ratingBtnTxt').textContent = '✦ Send Feedback to Eyob';
+  document.getElementById('ratingSpinner').style.display = 'none';
+  document.getElementById('ratingForm').reset();
+  document.querySelectorAll('.fav-chip').forEach(c => c.classList.remove('checked'));
+}
+
+function closeRatingModal(){
+  const overlay = document.getElementById('ratingModalOverlay');
+  overlay.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function setRating(val){
+  currentRating = val;
+  document.getElementById('ratingVal').value = val;
+  updateStars(val);
+  const labels = ['','⭐ Poor','⭐⭐ Fair','⭐⭐⭐ Good','⭐⭐⭐⭐ Very Good','⭐⭐⭐⭐⭐ Excellent!'];
+  document.getElementById('starLabel').textContent = labels[val] || '';
+}
+
+function updateStars(val){
+  document.querySelectorAll('.rate-star').forEach(s => {
+    s.classList.toggle('active', +s.dataset.val <= val);
+  });
+}
+
+/* fav chips toggle */
+document.querySelectorAll('.fav-chip').forEach(chip => {
+  chip.addEventListener('click', () => chip.classList.toggle('checked'));
+});
+
+function submitRating(e){
+  e.preventDefault();
+  const name       = document.getElementById('r-name').value.trim();
+  const email      = document.getElementById('r-email').value.trim();
+  const suggestion = document.getElementById('r-suggestion').value.trim();
+  const rating     = document.getElementById('ratingVal').value;
+  let valid = true;
+
+  /* validate */
+  const nameErr = document.getElementById('r-name-err');
+  const emailErr = document.getElementById('r-email-err');
+  const sugErr   = document.getElementById('r-sug-err');
+  nameErr.style.display  = 'none';
+  emailErr.style.display = 'none';
+  sugErr.style.display   = 'none';
+
+  if(name.length < 2)  { nameErr.style.display='block';  valid=false; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { emailErr.style.display='block'; valid=false; }
+  if(suggestion.length < 20) { sugErr.style.display='block'; valid=false; }
+  if(+rating === 0)    { showToast('⭐ Please select a star rating first!','e'); valid=false; }
+  if(!valid) return;
+
+  /* collect favourites */
+  const favs = [...document.querySelectorAll('.fav-chip.checked')]
+    .map(c => c.querySelector('input').value).join(', ') || 'Not specified';
+
+  const recommend = document.querySelector('input[name="recommend"]:checked')?.value || 'Not answered';
+  const role      = document.getElementById('r-role').value    || 'Not specified';
+  const source    = document.getElementById('r-source').value  || 'Not specified';
+  const extra     = document.getElementById('r-extra').value.trim() || 'None';
+
+  /* build Gmail mailto link */
+  const subject = encodeURIComponent(
+    `[Portfolio Feedback] ${rating}★ from ${name}`
+  );
+  const body = encodeURIComponent(
+`━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PORTFOLIO FEEDBACK — Eyob Eyoba
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⭐ RATING       : ${rating} / 5 stars
+👤 FULL NAME   : ${name}
+📧 EMAIL       : ${email}
+💼 PROFESSION  : ${role}
+🔗 SOURCE      : ${source}
+👍 RECOMMEND?  : ${recommend}
+❤️  FAVOURITES : ${favs}
+
+💡 SUGGESTION:
+${suggestion}
+
+📝 ADDITIONAL COMMENTS:
+${extra}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Sent from: ${window.location.href}
+Date: ${new Date().toLocaleString()}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━`
+  );
+
+  /* show loading */
+  const btn = document.getElementById('ratingSubmitBtn');
+  document.getElementById('ratingBtnTxt').textContent = 'Opening Gmail…';
+  document.getElementById('ratingSpinner').style.display = 'block';
+  btn.disabled = true;
+
+  /* open real Gmail compose */
+  const gmailURL = `https://mail.google.com/mail/?view=cm&fs=1&to=eyoba%40gmail.com&su=${subject}&body=${body}`;
+  window.open(gmailURL, '_blank');
+
+  /* show success after short delay */
+  setTimeout(() => {
+    document.getElementById('ratingForm').style.display   = 'none';
+    document.getElementById('ratingSuccess').style.display = 'block';
+  }, 1200);
 }
 
 /* ═══ DRUG FILTER BAR BUTTONS (re-init for correct scoping) ═══ */
