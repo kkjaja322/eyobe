@@ -1751,6 +1751,33 @@ body.cur-h .cur-dot{width:16px;height:16px;} body.cur-h .cur-ring{width:56px;hei
   z-index: 200; transition: all .3s var(--ease-spring);
 }
 .music-toggle-btn:hover { transform: scale(1.1); }
+.music-menu {
+  position: fixed; bottom: 5.5rem; left: 1.5rem; z-index: 201;
+  background: var(--c-card); border: 1px solid var(--c-border2);
+  border-radius: 16px; padding: .75rem; width: 240px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.5);
+  backdrop-filter: blur(20px);
+  transform: translateY(20px) scale(.95); opacity: 0; pointer-events: none;
+  transition: transform .35s var(--ease-spring), opacity .25s;
+}
+.music-menu.show { transform: translateY(0) scale(1); opacity: 1; pointer-events: all; }
+.music-menu__label { font-size: .68rem; font-weight: 700; color: var(--c-neon); letter-spacing: .08em; text-transform: uppercase; padding: .25rem .5rem .6rem; }
+.music-menu__item {
+  display: flex; align-items: center; gap: .65rem; width: 100%;
+  background: var(--c-glass); border: 1px solid transparent; border-radius: 10px;
+  padding: .6rem .75rem; cursor: pointer; transition: all .2s; margin-bottom: .35rem;
+  color: var(--c-txt);
+}
+.music-menu__item:last-child { margin-bottom: 0; }
+.music-menu__item:hover { background: var(--c-glass2); border-color: var(--c-border2); }
+.music-menu__item.active { border-color: var(--c-neon); background: rgba(0,255,229,.07); }
+.music-menu__num { font-family: var(--f-mono); font-size: .7rem; color: var(--c-neon); min-width: 16px; }
+.music-menu__info { flex: 1; text-align: left; }
+.music-menu__title { font-size: .78rem; font-weight: 600; }
+.music-menu__artist { font-size: .65rem; color: var(--c-txt3); margin-top: 2px; }
+.music-menu__play { font-size: .75rem; color: var(--c-txt3); transition: color .2s; }
+.music-menu__item:hover .music-menu__play,
+.music-menu__item.active .music-menu__play { color: var(--c-neon); }
 
 /* study mode overlay */
 .study-mode-toggle {
@@ -4957,12 +4984,44 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
 <!-- music toggle -->
 <button class="music-toggle-btn" id="musicToggle" title="Study Music" onclick="toggleMusicPlayer()">🎵</button>
 
-<!-- music player -->
+<!-- music toggle -->
+<button class="music-toggle-btn" id="musicToggle" title="Mezmur" onclick="toggleMusicMenu()">🎵</button>
+
+<!-- song chooser menu -->
+<div class="music-menu" id="musicMenu">
+  <div class="music-menu__label">🎶 Choose a Mezmur</div>
+  <button class="music-menu__item" onclick="selectTrack(0)">
+    <span class="music-menu__num">1</span>
+    <div class="music-menu__info">
+      <div class="music-menu__title">Min Bitwedegn New</div>
+      <div class="music-menu__artist">Abel Birhanu</div>
+    </div>
+    <span class="music-menu__play">▶</span>
+  </button>
+  <button class="music-menu__item" onclick="selectTrack(1)">
+    <span class="music-menu__num">2</span>
+    <div class="music-menu__info">
+      <div class="music-menu__title">Eyesus Lbel Eyesus</div>
+      <div class="music-menu__artist">Tewodros Yoseph</div>
+    </div>
+    <span class="music-menu__play">▶</span>
+  </button>
+  <button class="music-menu__item" onclick="selectTrack(2)">
+    <span class="music-menu__num">3</span>
+    <div class="music-menu__info">
+      <div class="music-menu__title">Le Tsehat</div>
+      <div class="music-menu__artist">Gebre Yohannes</div>
+    </div>
+    <span class="music-menu__play">▶</span>
+  </button>
+</div>
+
+<!-- now playing bar -->
 <div class="music-player" id="musicPlayer">
   <span class="music-player__icon">🎵</span>
   <div class="music-player__info">
-    <div class="music-player__title" id="musicTitle">Focus Flow</div>
-    <div class="music-player__sub" id="musicSub">Study Mode Playlist</div>
+    <div class="music-player__title" id="musicTitle">—</div>
+    <div class="music-player__sub" id="musicSub">Select a mezmur</div>
   </div>
   <div class="music-player__controls">
     <button class="music-ctrl-btn" onclick="prevTrack()" title="Previous">⏮</button>
@@ -7545,29 +7604,48 @@ document.addEventListener('keydown',e=>{
 
 /* ═══ MUSIC PLAYER ═══ */
 const TRACKS=[
-  {title:'Focus Flow',sub:'Deep Work Instrumental'},
-  {title:'Study Beats',sub:'Lo-Fi Hip Hop'},
-  {title:'Brain Food',sub:'Classical Focus'},
-  {title:'Code Mode',sub:'Ambient Electronic'},
-  {title:'Anesthesia Review',sub:'Calm Study Music'},
+  {title:'Min Bitwedegn New',sub:'Abel Birhanu',src:'abel.mp3'},
+  {title:'Eyesus Lbel Eyesus',sub:'Tewodros Yoseph',src:'tewodros.mp3'},
+  {title:'Le Tsehat',sub:'Gebre Yohannes',src:'gebre.mp3'},
 ];
-let trackIdx=0,isPlaying=false,musicVisible=false;
-function toggleMusicPlayer(){
-  musicVisible=!musicVisible;
-  document.getElementById('musicPlayer').classList.toggle('show',musicVisible);
+let trackIdx=0,isPlaying=false,menuVisible=false,playerVisible=false;
+const _audio=new Audio();
+_audio.addEventListener('ended',()=>{trackIdx=(trackIdx+1)%TRACKS.length;loadTrack(trackIdx);_audio.play();isPlaying=true;syncUI();});
+
+function toggleMusicMenu(){
+  menuVisible=!menuVisible;
+  document.getElementById('musicMenu').classList.toggle('show',menuVisible);
+}
+function selectTrack(idx){
+  trackIdx=idx;
+  loadTrack(idx);
+  _audio.play();
+  isPlaying=true;
+  playerVisible=true;
+  menuVisible=false;
+  document.getElementById('musicMenu').classList.remove('show');
+  document.getElementById('musicPlayer').classList.add('show');
+  syncUI();
+  showToast('♪ Now Playing: '+TRACKS[idx].title+' — '+TRACKS[idx].sub,'i',2500);
+}
+function loadTrack(idx){
+  _audio.src=TRACKS[idx].src;
+  document.getElementById('musicTitle').textContent=TRACKS[idx].title;
+  document.getElementById('musicSub').textContent=TRACKS[idx].sub;
+  document.querySelectorAll('.music-menu__item').forEach((el,i)=>el.classList.toggle('active',i===idx));
 }
 function togglePlay(){
-  isPlaying=!isPlaying;
-  document.getElementById('playPauseBtn').textContent=isPlaying?'⏸':'▶';
-  document.getElementById('playPauseBtn').classList.toggle('playing',isPlaying);
+  if(!playerVisible) return;
+  if(_audio.paused){_audio.play();isPlaying=true;}
+  else{_audio.pause();isPlaying=false;}
+  syncUI();
   showToast(isPlaying?'▶ Playing: '+TRACKS[trackIdx].title:'⏸ Paused','i',2000);
 }
-function nextTrack(){trackIdx=(trackIdx+1)%TRACKS.length;updateTrack();}
-function prevTrack(){trackIdx=(trackIdx-1+TRACKS.length)%TRACKS.length;updateTrack();}
-function updateTrack(){
-  document.getElementById('musicTitle').textContent=TRACKS[trackIdx].title;
-  document.getElementById('musicSub').textContent=TRACKS[trackIdx].sub;
-  if(isPlaying)showToast('♪ Now: '+TRACKS[trackIdx].title,'i',2000);
+function nextTrack(){trackIdx=(trackIdx+1)%TRACKS.length;loadTrack(trackIdx);if(isPlaying)_audio.play();}
+function prevTrack(){trackIdx=(trackIdx-1+TRACKS.length)%TRACKS.length;loadTrack(trackIdx);if(isPlaying)_audio.play();}
+function syncUI(){
+  const btn=document.getElementById('playPauseBtn');
+  if(btn){btn.textContent=isPlaying?'⏸':'▶';btn.classList.toggle('playing',isPlaying);}
 }
 
 /* ═══ STUDY MODE ═══ */
