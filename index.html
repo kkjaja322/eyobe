@@ -1740,7 +1740,16 @@ body.cur-h .cur-dot{width:16px;height:16px;} body.cur-h .cur-ring{width:56px;hei
 .music-player__controls { display: flex; gap: .35rem; }
 .music-ctrl-btn { background: none; border: none; cursor: pointer; font-size: 1rem; color: var(--c-txt2); transition: color .2s; padding: 2px; }
 .music-ctrl-btn:hover { color: var(--c-neon); }
-.music-ctrl-btn.playing { color: var(--c-neon); }
+.music-ctrl-btn.playing{color:var(--c-neon);}
+.music-close-btn{
+  width:26px;height:26px;border-radius:50%;
+  background:rgba(255,77,126,.15);
+  border:1px solid rgba(255,77,126,.4);
+  color:#ff7fa8;font-size:13px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;flex-shrink:0;
+}
+.music-close-btn:hover{background:rgba(255,77,126,.35);color:#fff;}
 .music-toggle-btn {
   position: fixed; bottom: 5.5rem; left: 1.5rem;
   width: 42px; height: 42px; border-radius: 50%;
@@ -5023,11 +5032,12 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
     <div class="music-player__title" id="musicTitle">—</div>
     <div class="music-player__sub" id="musicSub">Select a mezmur</div>
   </div>
-  <div class="music-player__controls">
+ <div class="music-player__controls">
     <button class="music-ctrl-btn" onclick="prevTrack()" title="Previous">⏮</button>
     <button class="music-ctrl-btn" id="playPauseBtn" onclick="togglePlay()" title="Play/Pause">▶</button>
     <button class="music-ctrl-btn" onclick="nextTrack()" title="Next">⏭</button>
   </div>
+  <button class="music-close-btn" onclick="closeMusicPlayer()" title="Close player">✕</button>
 </div>
 
 <!-- study mode toggle -->
@@ -7649,6 +7659,19 @@ function syncUI(){
 }
 
 /* ═══ STUDY MODE ═══ */
+function closeMusicPlayer(){
+  _audio.pause();
+  isPlaying=false;
+  syncUI();
+  playerVisible=false;
+  document.getElementById('musicPlayer').classList.remove('show');
+}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('#musicMenu')&&!e.target.closest('#musicToggle')){
+    menuVisible=false;
+    document.getElementById('musicMenu').classList.remove('show');
+  }
+});
 function toggleStudyMode(){
   document.body.classList.toggle('study-mode');
   const on=document.body.classList.contains('study-mode');
