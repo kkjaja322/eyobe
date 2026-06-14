@@ -4991,7 +4991,7 @@ img,canvas,video,iframe,svg{max-width:100%;height:auto;}
 <button id="btt" aria-label="Back to top">↑</button>
 
 <!-- music toggle -->
-<button class="music-toggle-btn" id="musicToggle" title="Study Music" onclick="toggleMusicPlayer()">🎵</button>
+
 
 <!-- music toggle -->
 <button class="music-toggle-btn" id="musicToggle" title="Mezmur" onclick="toggleMusicMenu()">🎵</button>
@@ -7667,9 +7667,10 @@ function closeMusicPlayer(){
   document.getElementById('musicPlayer').classList.remove('show');
 }
 document.addEventListener('click',function(e){
-  if(!e.target.closest('#musicMenu')&&!e.target.closest('#musicToggle')){
+  if(!e.target.closest('#musicMenu')&&!e.target.closest('.music-toggle-btn')){
     menuVisible=false;
-    document.getElementById('musicMenu').classList.remove('show');
+    var menu=document.getElementById('musicMenu');
+    if(menu) menu.classList.remove('show');
   }
 });
 function toggleStudyMode(){
