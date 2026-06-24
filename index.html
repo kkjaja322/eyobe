@@ -6713,17 +6713,57 @@ function toggleBioLang(){
   }
   function setErr(name,show){const e=document.getElementById(name+'Err'),i=document.getElementById(name==='fn'?'fn':name==='fe'?'fe':'fm');if(e)e.classList.toggle('show',show);if(i)i.classList.toggle('err',show);}
   ['fn','fe','fm'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('blur',()=>{const vn=el.name||id;setErr(id,!validate(el.name,el.value));});});
-  form.addEventListener('submit',e=>{
-    e.preventDefault();
-    let ok=true;
-    const n=document.getElementById('fn'),em=document.getElementById('fe'),msg=document.getElementById('fm');
-    if(!validate('name',n.value)){setErr('fn',true);ok=false;}else setErr('fn',false);
-    if(!validate('email',em.value)){setErr('fe',true);ok=false;}else setErr('fe',false);
-    if(!validate('message',msg.value)){setErr('fm',true);ok=false;}else setErr('fm',false);
-    if(!ok){showToast('Please fix the errors above.','e');return;}
-    sbmt.disabled=true;sbmt.classList.add('loading');
-    setTimeout(()=>{sbmt.disabled=false;sbmt.classList.remove('loading');fwrap.style.display='none';sbox.classList.add('show');showToast("Message sent! I'll be in touch soon.",'s');},2200);
-  });
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  let ok = true;
+  const n = document.getElementById('fn');
+  const em = document.getElementById('fe');
+  const msg = document.getElementById('fm');
+  
+  if(!validate('name', n.value)){setErr('fn',true); ok=false;} else setErr('fn',false);
+  if(!validate('email', em.value)){setErr('fe',true); ok=false;} else setErr('fe',false);
+  if(!validate('message', msg.value)){setErr('fm',true); ok=false;} else setErr('fm',false);
+  if(!ok){ showToast('Please fix the errors above.','e'); return; }
+  
+  sbmt.disabled = true;
+  sbmt.classList.add('loading');
+
+  try {
+    const formData = {
+      access_key: '37dfdec0-7ef3-4b5a-826f-9d8fb1601351',
+      subject: 'New Contact from Portfolio — ' + n.value,
+      from_name: n.value,
+      email: em.value,
+      message: msg.value,
+      topic: document.getElementById('fs').value || 'Not specified'
+    };
+
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json' 
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const data = await res.json();
+
+    if(data.success){
+      sbmt.disabled = false;
+      sbmt.classList.remove('loading');
+      fwrap.style.display = 'none';
+      sbox.classList.add('show');
+      showToast("✓ Message sent! I will be in touch soon.", 's');
+    } else {
+      throw new Error(data.message);
+    }
+  } catch(err) {
+    sbmt.disabled = false;
+    sbmt.classList.remove('loading');
+    showToast('Failed to send. Please try again.', 'e');
+  }
+});
 })();
 function resetForm(){document.getElementById('formWrap').style.display='';document.getElementById('successBox').classList.remove('show');document.getElementById('contactForm').reset();}
 
@@ -8011,7 +8051,7 @@ document.querySelectorAll('.fav-chip').forEach(chip => {
   chip.addEventListener('click', () => chip.classList.toggle('checked'));
 });
 
-function submitRating(e){
+async function submitRating(e){
   e.preventDefault();
   const name       = document.getElementById('r-name').value.trim();
   const email      = document.getElementById('r-email').value.trim();
@@ -8019,7 +8059,6 @@ function submitRating(e){
   const rating     = document.getElementById('ratingVal').value;
   let valid = true;
 
-  /* validate */
   const nameErr = document.getElementById('r-name-err');
   const emailErr = document.getElementById('r-email-err');
   const sugErr   = document.getElementById('r-sug-err');
@@ -8030,79 +8069,58 @@ function submitRating(e){
   if(name.length < 2)  { nameErr.style.display='block';  valid=false; }
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { emailErr.style.display='block'; valid=false; }
   if(suggestion.length < 20) { sugErr.style.display='block'; valid=false; }
-  if(+rating === 0)    { showToast('⭐ Please select a star rating first!','e'); valid=false; }
+  if(+rating === 0) { showToast('Please select a star rating!','e'); valid=false; }
   if(!valid) return;
 
-  /* collect favourites */
   const favs = [...document.querySelectorAll('.fav-chip.checked')]
     .map(c => c.querySelector('input').value).join(', ') || 'Not specified';
-
   const recommend = document.querySelector('input[name="recommend"]:checked')?.value || 'Not answered';
   const role      = document.getElementById('r-role').value    || 'Not specified';
   const source    = document.getElementById('r-source').value  || 'Not specified';
   const extra     = document.getElementById('r-extra').value.trim() || 'None';
 
-  /* build Gmail mailto link */
-  const subject = encodeURIComponent(
-    `[Portfolio Feedback] ${rating}★ from ${name}`
-  );
-  const body = encodeURIComponent(
-`━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PORTFOLIO FEEDBACK — Eyob Eyoba
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-⭐ RATING       : ${rating} / 5 stars
-👤 FULL NAME   : ${name}
-📧 EMAIL       : ${email}
-💼 PROFESSION  : ${role}
-🔗 SOURCE      : ${source}
-👍 RECOMMEND?  : ${recommend}
-❤️  FAVOURITES : ${favs}
-
-💡 SUGGESTION:
-${suggestion}
-
-📝 ADDITIONAL COMMENTS:
-${extra}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Sent from: ${window.location.href}
-Date: ${new Date().toLocaleString()}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━`
-  );
-
-  /* show loading */
   const btn = document.getElementById('ratingSubmitBtn');
-  document.getElementById('ratingBtnTxt').textContent = 'Opening Gmail…';
+  document.getElementById('ratingBtnTxt').textContent = 'Sending...';
   document.getElementById('ratingSpinner').style.display = 'block';
   btn.disabled = true;
 
-fetch('https://eyobe.lovestoblog.com/feedback.php', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    name, email, rating, suggestion,
-    role, source, favourites: favs, recommend, extra
-  })
-})
-.then(res => res.json())
-.then(data => {
-  if(data.success){
-    document.getElementById('ratingForm').style.display = 'none';
-    document.getElementById('ratingSuccess').style.display = 'block';
-  } else {
-    showToast('Error: ' + (data.errors?.[0] || data.error || 'Submission failed'), 'e');
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json' 
+      },
+      body: JSON.stringify({
+        access_key: '37dfdec0-7ef3-4b5a-826f-9d8fb1601351',
+        subject: `Portfolio Feedback — ${rating} Stars from ${name}`,
+        from_name: name,
+        email: email,
+        rating: `${rating} / 5 stars`,
+        profession: role,
+        source: source,
+        favourites: favs,
+        recommend: recommend,
+        suggestion: suggestion,
+        additional_comments: extra
+      })
+    });
+
+    const data = await res.json();
+
+    if(data.success){
+      document.getElementById('ratingForm').style.display = 'none';
+      document.getElementById('ratingSuccess').style.display = 'block';
+      showToast('Feedback sent! Thank you!', 's');
+    } else {
+      throw new Error(data.message);
+    }
+  } catch(err) {
     btn.disabled = false;
     document.getElementById('ratingBtnTxt').textContent = '✦ Send Feedback to Eyob';
     document.getElementById('ratingSpinner').style.display = 'none';
+    showToast('Failed to send. Please try again.', 'e');
   }
-})
-.catch(() => {
-  showToast('Network error — please try again', 'e');
-  btn.disabled = false;
-  document.getElementById('ratingBtnTxt').textContent = '✦ Send Feedback to Eyob';
-  document.getElementById('ratingSpinner').style.display = 'none';
-});
 }
 /* ═══ DRUG FILTER BAR BUTTONS (re-init for correct scoping) ═══ */
 document.querySelectorAll('#drugFilterBar .fbtn').forEach(btn=>{
