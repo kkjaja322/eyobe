@@ -1,0 +1,166 @@
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVENESS OPTIMIZATIONS
+   Zero horizontal scroll · Fluid layouts · 1-col stack < 768px
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Global box-model & overflow guard */
+*,*::before,*::after{box-sizing:border-box;}
+html,body{overflow-x:hidden;max-width:100vw;}
+img,canvas,video,iframe,svg{max-width:100%;height:auto;}
+
+/* ─── NAV ─── */
+@media(max-width:767px){
+  .nav__inner{padding:0 1rem;}
+  .nav__links{display:none;}
+}
+
+/* ─── HERO ─── */
+@media(max-width:1023px){
+  /* Allow hero to grow taller so stacked card is visible */
+  .hero{overflow:visible;min-height:100dvh;padding-bottom:3rem;}
+  .hero__inner{align-items:start;padding-top:1rem;}
+  /* Show profile card, place it ABOVE the text content on mobile */
+  .hero__card{
+    display:block !important;
+    order:-1;
+    margin:0 auto 1.5rem;
+    max-width:320px;
+    width:100%;
+  }
+  .hero__content{order:1;}
+  .float-badge{display:none;}
+    
+    
+  .photo-wrap img{max-height:260px;object-fit:cover;}
+  /* Slim down profile card padding on tablet */
+  .profile-card{padding:1.25rem;}
+}
+@media(max-width:639px){
+  .hero__card{max-width:240px;}
+  .photo-wrap img{max-height:200px;}
+  .profile-card{padding:1rem;}
+  /* Keep tags readable */
+  .tags{gap:.35rem;}
+  .tag{font-size:.65rem;padding:.25rem .6rem;}
+  .hero__btns{flex-direction:column;align-items:stretch;gap:.75rem;}
+  .hero__btns .btn-primary,
+  .hero__btns .btn-outline,
+  .hero__btns .btn-dl{width:100%;justify-content:center;text-align:center;}
+  .hero__title{font-size:clamp(1.8rem,8vw,3.5rem);}
+  .hero__sub{font-size:clamp(.85rem,3.5vw,1.1rem);}
+}
+
+/* ─── BENTO GRID ─── */
+@media(max-width:639px){
+  .bc2{grid-column:span 1 !important;}
+  .bc-row2{grid-row:span 1 !important;}
+  .bento-card{min-height:auto;}
+}
+
+/* ─── SECTION CONTAINER ─── */
+@media(max-width:767px){
+  .section{padding:3rem 0;}
+  .container{padding:0 1rem;}
+  .section__title{font-size:clamp(1.4rem,6vw,2rem);}
+}
+
+/* ─── EXPERIENCE TIMELINE ─── */
+@media(max-width:767px){
+  .tl-grid{grid-template-columns:1fr !important;}
+  .tl-spacer{display:none !important;}
+  .tl-item:nth-child(odd) .tl-content{text-align:left !important;}
+  .tl-item:nth-child(odd) .tl-tags{justify-content:flex-start !important;}
+}
+
+/* ─── HUB TABS ─── */
+@media(max-width:767px){
+  .hub-tabs{flex-wrap:wrap;gap:.35rem;padding:.5rem;}
+  .hub-tab{font-size:.68rem;padding:.4rem .7rem;white-space:nowrap;}
+  .hub-panel{padding:1.5rem 1rem;}
+}
+
+/* ─── VITALS MONITOR ─── */
+@media(max-width:1023px){
+  .vitals-monitor{flex-direction:column;gap:1rem;}
+  .vitals-grid{grid-template-columns:repeat(3,1fr);}
+}
+@media(max-width:639px){
+  .vitals-monitor{flex-direction:column;gap:.75rem;}
+  .vitals-grid{grid-template-columns:repeat(2,1fr);gap:.5rem;}
+  .vital-panel{padding:.75rem .5rem;}
+  .vital-panel-value{font-size:1.8rem !important;}
+  .ecg-canvas-wrap{width:100%;overflow:hidden;}
+  .ecg-canvas-wrap canvas{width:100% !important;height:70px !important;}
+  .alarm-controls{flex-wrap:wrap;gap:.4rem;}
+  .alarm-btn,.scenario-btn{font-size:.65rem;padding:.35rem .6rem;}
+}
+@media(max-width:479px){
+  .vitals-grid{grid-template-columns:repeat(2,1fr);}
+}
+
+/* ─── DRUG CALCULATOR (calc-row) ─── */
+@media(max-width:767px){
+  .calc-row{flex-direction:column;gap:1rem;}
+  .calc-row>*{width:100%;}
+  .calc-grid{grid-template-columns:1fr 1fr;}
+  .drug-calc-result{font-size:.85rem;}
+}
+
+/* ─── CODE PLAYGROUND ─── */
+@media(max-width:767px){
+  .playground-editor{grid-template-columns:1fr !important;grid-template-rows:auto auto;}
+  .pg-textarea,.pg-preview,.pg-pane{width:100% !important;min-height:220px;}
+  .pg-run-btn{width:100%;}
+}
+
+/* ─── DRUG INTERACTION ─── */
+@media(max-width:767px){
+  .dint-selects{flex-direction:column;gap:1rem;}
+  .dint-selects>*{width:100%;}
+  .dint-check-btn{width:100%;}
+}
+
+/* ─── SKILLS SECTION ─── */
+@media(max-width:639px){
+  .skills-grid{grid-template-columns:1fr !important;}
+}
+
+/* ─── PROJECTS GRID ─── */
+@media(max-width:639px){
+  .proj-grid{grid-template-columns:1fr !important;}
+}
+
+/* ─── CONTACT / FORM ─── */
+@media(max-width:767px){
+  .contact-layout{flex-direction:column;gap:2rem;}
+  .contact-layout>*{width:100%;}
+  .contact-form input,
+  .contact-form textarea,
+  .contact-form select{font-size:16px;}
+}
+
+/* ─── CERTIFICATIONS / GALLERY ─── */
+@media(max-width:639px){
+  .certs-grid{grid-template-columns:1fr !important;}
+  .gallery-grid{grid-template-columns:repeat(2,1fr) !important;}
+}
+
+/* ─── REG INFO GRID ─── */
+@media(max-width:479px){
+  .reg-info-grid{grid-template-columns:1fr !important;}
+}
+
+/* ─── TESTIMONIALS ─── */
+@media(max-width:639px){
+  .testi-grid{grid-template-columns:1fr !important;}
+}
+
+/* ─── MOB MENU ─── */
+.mob-menu{max-height:100dvh;overflow-y:auto;}
+@media(max-width:767px){
+  .mob-link{font-size:clamp(1.4rem,6vw,2rem);}
+}
+@keyframes bfImgPop {
+  from { transform: scale(0.6); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}

@@ -1,0 +1,103 @@
+/* ═══ LIVE STATS BAR ═══ */
+.live-bar{display:flex;flex-wrap:wrap;gap:1rem;padding:1rem 2rem;background:var(--c-bg2);border-top:1px solid var(--c-border);border-bottom:1px solid var(--c-border);justify-content:center;}
+.live-stat{display:flex;align-items:center;gap:.5rem;font-size:.8rem;}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--c-emerald);animation:dotBlink 2s ease-in-out infinite;flex-shrink:0;}
+.live-lbl{color:var(--c-txt3);}
+.live-val{font-family:var(--f-mono);font-weight:600;color:var(--c-neon);}
+
+/* clickable everything */
+.clickable{cursor:pointer;}
+.interactive{position:relative;cursor:pointer;}
+.interactive::after{content:'↗ Click for more';position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);font-size:.62rem;color:var(--c-neon);opacity:0;transition:opacity .2s;white-space:nowrap;}
+.interactive:hover::after{opacity:1;}
+
+/* ═══════════════════════════════════════════════════════════════
+   ✦ NEW ADDITIONS — GALLERY DOWNLOAD BUTTONS
+═══════════════════════════════════════════════════════════════ */
+.gitem-dl-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--c-neon), var(--c-neon2));
+  border: none;
+  color: #000;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity .25s, transform .25s var(--ease-spring);
+  z-index: 10;
+  box-shadow: 0 4px 16px rgba(0,255,229,.5);
+  text-decoration: none;
+}
+.gitem:hover .gitem-dl-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+.gitem-dl-btn:hover {
+  transform: scale(1.15) !important;
+  box-shadow: 0 6px 24px rgba(0,255,229,.7);
+}
+.gitem-detail-btn {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--c-neon3), var(--c-amber));
+  border: none;
+  color: #000;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity .25s, transform .25s var(--ease-spring);
+  z-index: 10;
+  box-shadow: 0 4px 16px rgba(255,77,126,.5);
+}
+.gitem:hover .gitem-detail-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+.gitem-detail-btn:hover {
+  transform: scale(1.15) !important;
+  box-shadow: 0 6px 24px rgba(255,77,126,.7);
+}
+.lb-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .5rem 1.25rem;
+  border-radius: 30px;
+  background: linear-gradient(135deg, var(--c-neon), var(--c-neon2));
+  color: #000;
+  font-size: .8rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  margin-top: .75rem;
+  transition: transform .2s, box-shadow .2s;
+  text-decoration: none;
+}
+.lb-download-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,255,229,.4);
+}
+.lb-actions {
+  display: flex;
+  justify-content: center;
+  gap: .75rem;
+  margin-top: .75rem;
+  flex-wrap: wrap;
+}
+
